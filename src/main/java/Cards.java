@@ -69,6 +69,13 @@ public class Cards {
             this.cardMap.put("AH",new Image(new FileInputStream("resources/cards/AH.png")));
             this.cardMap.put("AS",new Image(new FileInputStream("resources/cards/AS.png")));
 
+            this.cardMap.put("blue_back",new Image(new FileInputStream("resources/cards/blue_back.png")));
+            this.cardMap.put("purple_back",new Image(new FileInputStream("resources/cards/purple_back.png")));
+            this.cardMap.put("red_back",new Image(new FileInputStream("resources/cards/red_back.png")));
+            this.cardMap.put("yellow_back",new Image(new FileInputStream("resources/cards/yellow_back.png")));
+            this.cardMap.put("gray_back",new Image(new FileInputStream("resources/cards/gray_back.png")));
+            this.cardMap.put("green_back",new Image(new FileInputStream("resources/cards/green_back.png")));
+
         }catch(Exception ecp){
             ecp.printStackTrace();
         }
