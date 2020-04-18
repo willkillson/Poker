@@ -21,6 +21,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.FileInputStream;
 import java.security.Key;
+import java.util.ArrayList;
+import java.util.Set;
 
 
 public class Poker extends Application {
@@ -40,31 +42,36 @@ public class Poker extends Application {
         final Canvas canvas = new Canvas(1280,960);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        Image image = null;
-        try{
 
-            image = new Image(new FileInputStream("resources/cards/2C.png"));
 
-        }catch(Exception ecp){
-            ecp.printStackTrace();
+        Cards cards = new Cards();
+
+
+        Set<String> keys = cards.cardMap.keySet();
+        ArrayList<ImageView> views = new ArrayList<>();
+
+        int posX = 0;
+        int posY = 0;
+        for(String ck: keys){
+            ImageView iv = new ImageView(cards.cardMap.get(ck));
+            iv.setPreserveRatio(true);
+            iv.setFitHeight(150);
+            iv.setFitWidth(150);
+            iv.setX(100*posX);
+            iv.setY(150*posY);
+
+            posX++;
+            if(posX >=10){
+                posX=0;
+                posY++;
+            }
+
+            views.add(iv);
         }
 
-        ImageView iv = new ImageView(image);
-        iv.setPreserveRatio(true);
-        iv.setFitHeight(100);
-        iv.setFitWidth(100);
-
-
-        //gc.drawImage(image,0,0);
-
-
-
-/*        gc.setFill(Color.BLUE);
-        gc.fillRect(75,75,100,100);*/
-
-        root.getChildren().add(iv);
-
-
+        for(int i = 0;i< views.size();i++){
+            root.getChildren().add(views.get(i));
+        }
 
         stage.setScene(s);
         stage.show();
