@@ -26,15 +26,23 @@ public class PokerGame implements Runnable {
         Player p1 = new Player("kevin@gmail.com",1000);
         Player p2 = new Player("rita@gmail.com",1000);
         Player p3 = new Player("kelly@gmail.com",1000);
+        Player p4 = new Player("somers@gmail.com",1000);
+        Player p5 = new Player("petrone@gmail.com",1000);
+        Player p6 = new Player("mackadocious@gmail.com",1000);
 
-        playerMap.put(p1.email,p1);
-        playerMap.put(p2.email,p2);
-        playerMap.put(p3.email,p3);
+        loginPlayer(p1);
+        loginPlayer(p2);
+        loginPlayer(p3);
+        loginPlayer(p4);
+        loginPlayer(p5);
+        loginPlayer(p6);
 
-        playerQueue.add(p1);
-        playerQueue.add(p2);
-        playerQueue.add(p3);
 
+    }
+
+    public void loginPlayer(Player player){
+        playerMap.put(player.email,player);
+        playerQueue.add(player);
     }
 
     @Override
