@@ -1,6 +1,12 @@
 import java.util.*;
 
 public class PokerGame implements Runnable {
+
+    Cards cards;
+    boolean updateScreen;
+
+    public ArrayList<String> deltCards;
+
     HashMap<String, Player> playerMap;
     Queue<Player> playerQueue;
     Stack<Player> turnStack;
@@ -10,10 +16,12 @@ public class PokerGame implements Runnable {
 
     int currentPot = 0;
 
-    public PokerGame(){
+    public PokerGame(Cards cards){
+        this.cards = cards;
         this.playerQueue = new LinkedList<>();
         this.turnStack = new Stack<>();
         this.playerMap = new HashMap<>();
+        this.deltCards = new ArrayList<>();
 
         Player p1 = new Player("kevin@gmail.com",1000);
         Player p2 = new Player("rita@gmail.com",1000);
@@ -39,6 +47,7 @@ public class PokerGame implements Runnable {
             createTurnStack();
             System.out.println("");
             System.out.println("Hand start");
+            this.deltCards = deal(52);
 
             String bigBlinds = this.turnStack.pop().email;
             String smallBlinds = this.turnStack.pop().email;
@@ -80,6 +89,33 @@ public class PokerGame implements Runnable {
             //game is over, reorder the playerQueue
             setPlayerQueue();
         }
+    }
+
+    ArrayList<String> deal(int amount){
+
+        Set<String> cards = this.cards.cardMap.keySet();
+        ArrayList<String> cardList = new ArrayList<>();//fulldeck
+        for(String s:cards){
+            cardList.add(s);
+        }
+
+        ArrayList<String> hand = new ArrayList<>();
+        for(int i = 0;i<amount;i++){
+
+            int random = (int) Math.floor(Math.random()*cardList.size());
+            Collections.shuffle(cardList);
+            for(int j = 0;j< cardList.size();j++){
+                if(j==random){
+                    hand.add(cardList.get(j));
+                    cardList.remove(j);
+                }
+            }
+        }
+
+        System.out.println(hand.size());
+
+        return hand;
+
     }
 
     void createTurnStack(){
