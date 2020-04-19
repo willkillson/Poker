@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,12 +20,15 @@ import java.util.ArrayList;
 import java.util.Set;
 
 
-public class Poker extends Application {
+public class Main extends Application {
+    private static PokerGame game;
 
     @Override
     public void start(Stage stage) {
         stage.setScene(menu(stage));
         stage.show();
+
+
     }
 
 
@@ -32,9 +36,6 @@ public class Poker extends Application {
         ToolBar tb = new ToolBar();
         Button b1 = new Button("Cards");
         tb.getItems().add(b1);
-
-        tb.setScaleX(5);
-        tb.setScaleY(5);
 
         tb.autosize();
         b1.setOnAction(event -> {stage.setScene(gameScene());});
@@ -46,10 +47,6 @@ public class Poker extends Application {
         Group delt = new Group();
 
         BorderPane borderPane = new BorderPane();
-
-        final Canvas canvas = new Canvas(1280,960);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
         Cards cards = new Cards();
 
         Set<String> keys = cards.cardMap.keySet();
@@ -83,20 +80,26 @@ public class Poker extends Application {
             hand.getChildren().add(views.get(i));
         }
 
-
-        //delt.setScaleX(0.4);
-        //delt.setScaleY(0.4);
-
-
-
         borderPane.setTop(delt);
         borderPane.setCenter(hand);
+
+        hand.setOnMouseEntered(event -> {
+            Node node = event.getPickResult().getIntersectedNode();
+            System.out.println();
+            System.out.println(event.getY());
+        });
+
 
         return new Scene(borderPane, 1280, 960, Color.BLACK);
 
     }
 
     public static void main(String[] args) {
+
+        game = new PokerGame();
+        Thread thread = new Thread(game);
+        thread.start();
+
         launch();
     }
 
