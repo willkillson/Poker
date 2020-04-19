@@ -2,7 +2,9 @@ import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Cards {
 
@@ -79,5 +81,32 @@ public class Cards {
         }catch(Exception ecp){
             ecp.printStackTrace();
         }
+    }
+
+    public ArrayList<String> getFullDeck(){
+        Set<String> cards = cardMap.keySet();
+
+        ArrayList<String> cardList = new ArrayList<>();//fulldeck
+        for(String s:cards){
+            cardList.add(s);
+        }
+        return cardList;
+    }
+
+    public ArrayList<String> deal(int amount, ArrayList<String> cardList){
+
+        ArrayList<String> hand = new ArrayList<>();
+        for(int i = 0;i<amount;i++){
+
+            int random = (int) Math.floor(Math.random()*cardList.size());
+            Collections.shuffle(cardList);
+            for(int j = 0;j< cardList.size();j++){
+                if(j==random){
+                    hand.add(cardList.get(j));
+                    cardList.remove(j);
+                }
+            }
+        }
+        return hand;
     }
 }
