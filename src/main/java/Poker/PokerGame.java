@@ -1,5 +1,7 @@
 package Poker;
 
+import static Poker.Main.console;
+
 import java.util.*;
 
 public class PokerGame implements Runnable {
@@ -53,8 +55,12 @@ public class PokerGame implements Runnable {
         //big blinds
         //little blinds
         while(playerMap.size()>=2){
+
             //start of turn
             createTurnStack();
+            //console.write("helloWorld!");
+
+
             System.out.println("");
             System.out.println("Hand start");
 
@@ -75,6 +81,8 @@ public class PokerGame implements Runnable {
             while(!this.turnStack.isEmpty()){
                 //play out the betting process
                 String email = this.turnStack.pop().email;
+                //console.setCursorPos(0,50);
+                //console.write("Turn: "+email);
                 System.out.println("Turn: "+email);
             }
             //decide the winner
@@ -132,6 +140,7 @@ public class PokerGame implements Runnable {
     void printStandings(){
         for(String s: playerMap.keySet())
         {
+
            System.out.println(playerMap.get(s).toString());
         }
     }
