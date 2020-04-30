@@ -1,6 +1,7 @@
 package Poker;
 
 import ConsoleGUI.JConsole;
+import java.awt.Container;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -17,6 +18,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
@@ -35,7 +37,7 @@ public class Main extends Application {
 
     private static PokerGame game;
     private static Cards cards;
-    public static JConsole console;
+    public static JConsole myConsole;
 
     TilePane tilePane;
 
@@ -48,6 +50,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+
+
 
         tilePane = new TilePane();
 
@@ -77,38 +81,36 @@ public class Main extends Application {
             views.add(iv);
         }
         tilePane.getChildren().addAll(views);
-        borderPane.setCenter(tilePane);
+        borderPane.setTop(tilePane);
 
 
 
-
-        /*MyConsole console = new MyConsole();*/
-
-        int MAXCURSORPOS_R = 40;
-        int MAXCURSORPOS_C = 100;
-
-        console = new JConsole(MAXCURSORPOS_C,MAXCURSORPOS_R);
-        console.setCursorVisible(true);
-        console.setCursorBlink(true);
-
-
-        //console.captureStdOut();
-        System.out.println("Captured output");
-
-
+        myConsole = new MyConsole();
         SwingNode sn = new SwingNode();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                sn.setContent(console);
+                sn.setContent(myConsole);
             }
         });
 
+        //myConsole.captureStdOut();
         borderPane.setBottom(sn);
-        stage.setWidth(1116);
-        stage.setHeight(800);
+
+        myConsole.captureStdOut();
+
+        Scene scene = new Scene(borderPane, 1280, 960, Color.BLACK);
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                myConsole.write(keyEvent.getText(),java.awt.Color.GREEN, java.awt.Color.BLACK);
+                myConsole.repaint();
+            }
+        });
+
+
         stage.setResizable(false);
-        stage.setScene(new Scene(borderPane, 1280, 960, Color.BLACK));
+        stage.setScene(scene);
         stage.show();
 
 
@@ -128,13 +130,13 @@ public class Main extends Application {
                         iv.setFitWidth(150);
                         tilePane.getChildren().add(iv);
                     }
-                    console.write("hello", java.awt.Color.GREEN,java.awt.Color.BLACK );
-                    console.repaint();
-
 
                 }catch(Exception ecp){
                     ecp.printStackTrace();
                 }
+
+                myConsole.repaint();
+                myConsole.setCursorPos(0,0);
 
             }
         }));
@@ -162,6 +164,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+
         cards = new Cards();
         game = new PokerGame(cards);
         Thread thread = new Thread(game);

@@ -1,6 +1,5 @@
 package Poker;
 
-import static Poker.Main.console;
 
 import java.util.*;
 
@@ -57,12 +56,9 @@ public class PokerGame implements Runnable {
         while(playerMap.size()>=2){
 
             //start of turn
+            if(Main.myConsole!=null)
+                Main.myConsole.clear();//clear the console
             createTurnStack();
-            //console.write("helloWorld!");
-
-
-            System.out.println("");
-            System.out.println("Hand start");
 
             ArrayList<String> deck = cards.getFullDeck();
             this.deltCards = cards.deal(5,deck);
