@@ -85,7 +85,7 @@ public class Main extends Application {
 
 
 
-        myConsole = new MyConsole();
+
         SwingNode sn = new SwingNode();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -165,6 +165,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
+        myConsole = new MyConsole();
         cards = new Cards();
         game = new PokerGame(cards);
         Thread thread = new Thread(game);

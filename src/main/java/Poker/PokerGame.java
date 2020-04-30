@@ -1,6 +1,7 @@
 package Poker;
 
 
+import java.awt.Color;
 import java.util.*;
 
 public class PokerGame implements Runnable {
@@ -9,6 +10,10 @@ public class PokerGame implements Runnable {
     boolean updateScreen;
 
     public ArrayList<String> deltCards;
+    String winner;
+    String pBBlinds;
+    String pSBlinds;
+
 
     HashMap<String, Player> playerMap;
     Queue<Player> playerQueue;
@@ -50,14 +55,15 @@ public class PokerGame implements Runnable {
 
     @Override
     synchronized public void run() {
+        winner = "";
+        pBBlinds = "";
+        pSBlinds = "";
 
         //big blinds
         //little blinds
         while(playerMap.size()>=2){
 
             //start of turn
-            if(Main.myConsole!=null)
-                Main.myConsole.clear();//clear the console
             createTurnStack();
 
             ArrayList<String> deck = cards.getFullDeck();
@@ -66,25 +72,19 @@ public class PokerGame implements Runnable {
             String bigBlinds = this.turnStack.pop().email;
             String smallBlinds = this.turnStack.pop().email;
 
-            System.out.println("BigBlinds: "+bigBlinds);
+            pBBlinds = "BigBlinds: "+bigBlinds;
             this.currentPot += playerMap.get(bigBlinds).chargePlayer(currentBlinds);
-            System.out.println("SmallBlinds: "+smallBlinds);
-            this.currentPot += playerMap.get(smallBlinds).chargePlayer(currentBlinds/2);
+            pSBlinds = "SmallBlinds: "+smallBlinds;
 
+            printBlinds();
+
+            this.currentPot += playerMap.get(smallBlinds).chargePlayer(currentBlinds/2);
             this.turnStack.push(playerMap.get(smallBlinds));
             this.turnStack.push(playerMap.get(bigBlinds));
 
-            while(!this.turnStack.isEmpty()){
-                //play out the betting process
-                String email = this.turnStack.pop().email;
-                //console.setCursorPos(0,50);
-                //console.write("Turn: "+email);
-                System.out.println("Turn: "+email);
-            }
             //decide the winner
-            String winner = decideWinner();
+            winner = decideWinner();
             playerMap.get(winner).payPlayer(this.currentPot);
-            System.out.println("Winning player: "+winner);
             this.currentPot = 0;
             //remove losers
             for(String s: playerMap.keySet()){
@@ -94,7 +94,6 @@ public class PokerGame implements Runnable {
                 }
             }
 
-            printStandings();
             try{
                 this.wait(2000);
 
@@ -104,10 +103,59 @@ public class PokerGame implements Runnable {
 
             //game is over, reorder the playerQueue
             setPlayerQueue();
+
+
+
+            print();
+
         }
     }
 
 
+    void print(){
+        Main.myConsole.clear();//clear the console
+        printWinner();
+        printStandings();
+        printTurnStack();
+    }
+
+    void printBlinds(){
+        int row = 1;
+
+
+        Main.myConsole.setCursorPos(0,row);
+        Main.myConsole.write(pBBlinds, Color.WHITE, Color.BLACK);
+        Main.myConsole.setCursorPos(0,row+1);
+        Main.myConsole.write(pSBlinds, Color.WHITE, Color.BLACK);
+
+
+    }
+    void printStandings(){
+        int row = 10;
+
+        for(String s: playerMap.keySet())
+        {
+            Main.myConsole.setCursorPos(0,row);
+            //System.out.println(playerMap.get(s).toString());
+            Main.myConsole.write(playerMap.get(s).toString(), Color.GREEN, Color.BLACK);
+            row++;
+        }
+    }
+
+    void printWinner(){
+        Main.myConsole.setCursorPos(0,0);
+        Main.myConsole.write("Winning player: "+winner, Color.RED, Color.BLACK);
+    }
+
+    void printTurnStack(){
+        int row = 3;
+        while(!this.turnStack.isEmpty()){
+            String email = this.turnStack.pop().email;
+            Main.myConsole.setCursorPos(0,row);
+            Main.myConsole.write("Turn: "+email, Color.CYAN, Color.BLACK);
+            row++;
+        }
+    }
 
     void createTurnStack(){
         for(Player p:playerQueue){
@@ -133,13 +181,6 @@ public class PokerGame implements Runnable {
         return "";
     }
 
-    void printStandings(){
-        for(String s: playerMap.keySet())
-        {
-
-           System.out.println(playerMap.get(s).toString());
-        }
-    }
 
 
 }
