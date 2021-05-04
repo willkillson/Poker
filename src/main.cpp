@@ -1,4 +1,5 @@
 #include <Arduino.h>
+// #include <Keyboard.h>
 #include <Keyboard.h>
 #include <Mouse.h>
 #include <string.h>
@@ -139,6 +140,18 @@ const uint8_t asciimap[128] =
 	0				// DEL
 };
 
+struct MODIFIERKEYS {
+        uint8_t bmLeftCtrl : 1;
+        uint8_t bmLeftShift : 1;
+        uint8_t bmLeftAlt : 1;
+        uint8_t bmLeftGUI : 1;
+        uint8_t bmRightCtrl : 1;
+        uint8_t bmRightShift : 1;
+        uint8_t bmRightAlt : 1;
+        uint8_t bmRightGUI : 1;
+};
+
+
 int buttonPin = 9;  // Set a button to any pin
 
 //Screen Resolution
@@ -219,22 +232,34 @@ void loop() {
       s_bit - modifier
       t_bit - keycode
     */
+		MODIFIERKEYS mod;
+		*((uint8_t*)&mod) = s_bit;
 
     if(f_bit==0x00){
       //key down
       //s_bit
 
+			if(mod.bmLeftShift == 1){
+				Keyboard.press(KEY_LEFT_SHIFT);
+			}else{
+				Keyboard.release(KEY_LEFT_SHIFT);
+			}
 
       for(uint8_t i = 0;i< 128;i++){
         if(asciimap[i]==t_bit){
           Keyboard.press(i);
         }
       }
-      
 
 
-
+    
     }else{
+
+			if(mod.bmLeftShift == 1){
+				Keyboard.press(KEY_LEFT_SHIFT);
+			}else{
+				Keyboard.release(KEY_LEFT_SHIFT);
+			}
 
       for(uint8_t i = 0;i< 128;i++){
         if(asciimap[i]==t_bit){
@@ -242,6 +267,9 @@ void loop() {
         }
       }
 
+
+
+			
 
     }
 
