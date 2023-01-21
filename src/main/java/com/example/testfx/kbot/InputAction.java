@@ -24,6 +24,8 @@ public class InputAction {
     public int xPos;
     public int yPos;
 
+    public String description = "";
+
     public InputAction(final long time,final int keyCode, final String type){
         this.keyCode = keyCode;
         this.time = time;
@@ -35,6 +37,13 @@ public class InputAction {
         this.type = type;
         this.xPos = xPos;
         this.yPos = yPos;
+    }
+
+    public InputAction(final long time,final int keyCode, final String type, final String description){
+        this.keyCode = keyCode;
+        this.time = time;
+        this.type = type;
+        this.description = description;
     }
 
     public String getType(){

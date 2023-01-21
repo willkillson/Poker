@@ -1,8 +1,8 @@
 package com.example.testfx;
 
 import com.example.testfx.kbot.InputTest;
+import com.example.testfx.model.InputActionModel;
 import javafx.application.Application;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -10,30 +10,18 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 public class TableViewSample extends Application {
 
-    private TableView<Person> table = new TableView<Person>();
-    private ArrayList<TableColumn> columnNames = new ArrayList<>();
-    public final ObservableList<Person> data =
-            FXCollections.observableArrayList(
-                    new Person("Jacob", "Smith", "jacob.smith@example.com"),
-                    new Person("Isabella", "Johnson", "isabella.johnson@example.com"),
-                    new Person("Ethan", "Williams", "ethan.williams@example.com"),
-                    new Person("Emma", "Jones", "emma.jones@example.com"),
-                    new Person("Michael", "Brown", "michael.brown@example.com")
-            );
-
-    private InputTest inputTest;
+    public MyTableView table;
+    final ObservableList<InputActionModel> data2 =
+            FXCollections.observableArrayList();
 
     public static void main(String[] args) throws AWTException {
         launch(args);
@@ -41,18 +29,55 @@ public class TableViewSample extends Application {
 
     @Override
     public void start(Stage stage) throws AWTException {
+        this.table = new MyTableView(this);
 
-        this.inputTest = new  InputTest();
+        //    final HBox hb = new HBox();
+        InputTest inputTest = new InputTest(this);
 
         Scene scene = new Scene(new Group());
         stage.setTitle("Table View Sample");
-        stage.setWidth(450);
-        stage.setHeight(500);
+        stage.setWidth(950);
+        stage.setHeight(550);
 
         final Label label = new Label("Address Book");
-        label.setFont(new Font("Arial", 20));
+        label.setFont(new Font("Consolas", 20));
 
-        setUpTable(this.table);
+        table.setEditable(true);
+
+        TableColumn<InputActionModel, String> type = new TableColumn<>("Type");
+        type.setMinWidth(150);
+        type.setCellValueFactory(
+                new PropertyValueFactory<>("type"));
+
+        TableColumn<InputActionModel, String> time = new TableColumn<>("Time");
+        time.setMinWidth(50);
+        time.setCellValueFactory(
+                new PropertyValueFactory<>("time"));
+
+        TableColumn<InputActionModel, String> keyCode = new TableColumn<InputActionModel, String>("Key Code");
+        keyCode.setMinWidth(50);
+        keyCode.setCellValueFactory(
+                new PropertyValueFactory<>("keyCode"));
+
+        TableColumn<InputActionModel, String> xPos = new TableColumn<>("Mouse X Position");
+        xPos.setMinWidth(150);
+        xPos.setCellValueFactory(
+                new PropertyValueFactory<>("xPos"));
+
+        TableColumn<InputActionModel, String> yPos = new TableColumn<>("Mouse Y Position");
+        yPos.setMinWidth(150);
+        yPos.setCellValueFactory(
+                new PropertyValueFactory<>("yPos"));
+
+        TableColumn<InputActionModel, String> description = new TableColumn<>("Description");
+        description.setMinWidth(150);
+        description.setCellValueFactory(
+                new PropertyValueFactory<>("description"));
+
+        table.setItems(data2);
+
+        table.getColumns().addAll(type, time, keyCode, xPos, yPos, description);
+
 
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
@@ -65,70 +90,4 @@ public class TableViewSample extends Application {
         stage.show();
     }
 
-    private <T> void setUpTable(TableView<T> table){
-        boolean isEditable = true;
-        int minWidth = 100;
-
-        table.setEditable(isEditable);
-
-        TableColumn firstNameCol = new TableColumn("First Name");
-        firstNameCol.setMinWidth(minWidth);
-        firstNameCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("firstName"));
-
-        TableColumn lastNameCol = new TableColumn("Last Name");
-        lastNameCol.setMinWidth(minWidth);
-        lastNameCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("lastName"));
-
-        TableColumn emailCol = new TableColumn("Email");
-        emailCol.setMinWidth(minWidth);
-        emailCol.setCellValueFactory(
-                new PropertyValueFactory<Person, String>("email"));
-
-
-        table.setItems((ObservableList<T>) data);
-        table.getColumns().addAll(firstNameCol, lastNameCol, emailCol);
-    }
-
-    public void addPerson(String firstName, String lastName, String emailAddress){
-
-    }
-
-    public static class Person {
-
-        private final SimpleStringProperty firstName;
-        private final SimpleStringProperty lastName;
-        private final SimpleStringProperty email;
-
-        private Person(String fName, String lName, String email) {
-            this.firstName = new SimpleStringProperty(fName);
-            this.lastName = new SimpleStringProperty(lName);
-            this.email = new SimpleStringProperty(email);
-        }
-
-        public String getFirstName() {
-            return firstName.get();
-        }
-
-        public void setFirstName(String fName) {
-            firstName.set(fName);
-        }
-
-        public String getLastName() {
-            return lastName.get();
-        }
-
-        public void setLastName(String fName) {
-            lastName.set(fName);
-        }
-
-        public String getEmail() {
-            return email.get();
-        }
-
-        public void setEmail(String fName) {
-            email.set(fName);
-        }
-    }
 } 

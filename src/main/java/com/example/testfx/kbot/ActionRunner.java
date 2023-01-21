@@ -1,9 +1,6 @@
 package com.example.testfx.kbot;
 
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.util.List;
 import java.util.Queue;
 
 public class ActionRunner extends Thread{
@@ -24,24 +21,12 @@ public class ActionRunner extends Thread{
                 System.out.println(inputAction.toString());
                 Thread.sleep(inputAction.time - prevActionTime);
 
-
-
-                switch(inputAction.getType()){
-                    case InputAction.KEYBOARD_BUTTON_PRESS:
-                        robot.keyPress(inputAction.getKeyboardCode());
-                        break;
-                    case InputAction.KEYBOARD_BUTTON_RELEASE:
-                        robot.keyRelease(inputAction.getKeyboardCode());
-                        break;
-                    case InputAction.MOUSE_MOVEMENT:
-                        robot.mouseMove(inputAction.xPos,inputAction.yPos);
-                        break;
-                    case InputAction.MOUSE_BUTTON_PRESS:
-                        robot.mousePress(inputAction.getMouseButtonCode());
-                        break;
-                    case InputAction.MOUSE_BUTTON_RELEASE:
-                        robot.mouseRelease(inputAction.getMouseButtonCode());
-                        break;
+                switch (inputAction.getType()) {
+                    case InputAction.KEYBOARD_BUTTON_PRESS -> robot.keyPress(inputAction.getKeyboardCode());
+                    case InputAction.KEYBOARD_BUTTON_RELEASE -> robot.keyRelease(inputAction.getKeyboardCode());
+                    case InputAction.MOUSE_MOVEMENT -> robot.mouseMove(inputAction.xPos, inputAction.yPos);
+                    case InputAction.MOUSE_BUTTON_PRESS -> robot.mousePress(inputAction.getMouseButtonCode());
+                    case InputAction.MOUSE_BUTTON_RELEASE -> robot.mouseRelease(inputAction.getMouseButtonCode());
                 }
 
                 prevActionTime = inputAction.time;

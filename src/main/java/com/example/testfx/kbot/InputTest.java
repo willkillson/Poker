@@ -1,5 +1,7 @@
 package com.example.testfx.kbot;
 
+import com.example.testfx.KeyLogEvent;
+import com.example.testfx.TableViewSample;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
@@ -7,38 +9,38 @@ import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
 import com.github.kwhat.jnativehook.mouse.NativeMouseListener;
 import com.github.kwhat.jnativehook.mouse.NativeMouseMotionListener;
+import javafx.application.Application;
 
-import java.awt.*;
-import java.awt.event.InputEvent;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class InputTest implements
         NativeKeyListener,
         NativeMouseListener,
-        NativeMouseMotionListener {//<-- Remember to add the jnativehook library
+        NativeMouseMotionListener {
 
-    private InputManager inputManager;
-    private Robot robot = new Robot();
-    private int xpos = 0;
-    private int ypos = 0;
+    private final InputManager inputManager;
 
+    private final boolean uiActivated;
+    private TableViewSample app;
     private boolean isPrintKey = false;
 
-    public static void main(String args[]) throws AWTException {
-        new InputTest();
+    public static void main(String[] args) {
+        new InputTest(null);
     }
 
-    public InputTest() throws AWTException {
-        //        InputTest.startTime = System.currentTimeMillis();
-        //(From here)
+    public InputTest(Application app) {
+        if (app == null){
+            this.uiActivated = false;
+        }else{
+            this.uiActivated = true;
+            this.app = (TableViewSample) app;
+        }
+
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
         logger.setUseParentHandlers(false);
-        //(To there-^)
+
         try {
             GlobalScreen.registerNativeHook();
         }
@@ -51,35 +53,12 @@ public class InputTest implements
         GlobalScreen.addNativeKeyListener(this);
         GlobalScreen.addNativeMouseListener(this);
         GlobalScreen.addNativeMouseMotionListener(this);
-        //Remember to include this^                     ^- Your class
 
         this.inputManager = new InputManager();
 
     }
 
     public void nativeKeyPressed(NativeKeyEvent e) {
-        System.out.println(e.getRawCode());
-//        int scale = 10;
-//        if(e.getRawCode() == 104){
-//            ypos -= 1*scale;
-//        }
-//        if(e.getRawCode() == 102){
-//            xpos += 1*scale;
-//        }
-//        if(e.getRawCode() == 98){
-//            ypos += 1*scale;
-//        }
-//        if(e.getRawCode() == 100){
-//            xpos -= 1*scale;
-//        }
-//        if(e.getRawCode() == 101){
-//            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
-//            robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
-//        }
-//
-//        if(e.getRawCode() == 104 || e.getRawCode() == 102 || e.getRawCode() == 98 || e.getRawCode() == 100)
-//            robot.mouseMove(xpos,ypos);
-
         switch(e.getRawCode()){
             case 103:
                 // 7 - numpad
@@ -104,7 +83,7 @@ public class InputTest implements
                 break;
             case 100:
                 // 4 - numpad
-                System.out.println("Reseting macro");
+                System.out.println("Reset macro");
                 this.inputManager.resetActions();
                 break;
             case 101:
@@ -116,15 +95,21 @@ public class InputTest implements
                 System.out.println("PrintKey");
                 this.isPrintKey = !this.isPrintKey;
             default:
-                if(this.inputManager.isRecording()==true){
-                    this.inputManager.addKeyboardPress(System.currentTimeMillis(),e.getRawCode());
+                if(this.inputManager.isRecording()){
+                    InputAction ia = this.inputManager.addKeyboardPress(System.currentTimeMillis(),e.getRawCode());
+                    if(this.uiActivated){
+                        this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+                    }
                 }
         }
     }
 
     public void nativeKeyReleased(NativeKeyEvent e) {
-        if(this.inputManager.isRecording()==true){
-            this.inputManager.addKeyboardRelease(System.currentTimeMillis(),e.getRawCode());
+        if(this.inputManager.isRecording()){
+            InputAction ia = this.inputManager.addKeyboardRelease(System.currentTimeMillis(),e.getRawCode());
+            if(this.uiActivated){
+                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+            }
         }
     }
 
@@ -140,37 +125,41 @@ public class InputTest implements
 
     @Override
     public void nativeMousePressed(NativeMouseEvent e) {
-//        System.out.println("nativeMousePressed: " + e.getButton());
-        if(this.inputManager.isRecording()==true){
-            this.inputManager.addMouseButtonPress(System.currentTimeMillis(),e.getButton());
+        if(this.inputManager.isRecording()){
+            InputAction ia = this.inputManager.addMouseButtonPress(System.currentTimeMillis(),e.getButton());
+            if(this.uiActivated){
+                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+            }
         }
     }
 
     @Override
     public void nativeMouseReleased(NativeMouseEvent e) {
-//        System.out.println("nativeMouseReleased: " + e.getButton());
-        if(this.inputManager.isRecording()==true){
-            this.inputManager.addMouseButtonRelease(System.currentTimeMillis(),e.getButton());
+        if(this.inputManager.isRecording()){
+            InputAction ia = this.inputManager.addMouseButtonRelease(System.currentTimeMillis(),e.getButton());
+            if(this.uiActivated){
+                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+            }
         }
     }
 
     @Override
     public void nativeMouseMoved(NativeMouseEvent e) {
-        if(this.isPrintKey){
-            System.out.println("x: " + e.getX() + " y: "+e.getY());
-        }
-
-        if(this.inputManager.isRecording()==true){
-            this.inputManager.addMouseMove(System.currentTimeMillis(), e.getX(), e.getY());
+        if(this.inputManager.isRecording()){
+            InputAction ia = this.inputManager.addMouseMove(System.currentTimeMillis(), e.getX(), e.getY());
+            if(this.uiActivated){
+                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+            }
         }
     }
 
     @Override
     public void nativeMouseDragged(NativeMouseEvent e) {
-//        System.out.println("nativeMouseDragged: " + e.getX() + " "+ e.getY());
-
-        if(this.inputManager.isRecording()==true){
-            this.inputManager.addMouseMove(System.currentTimeMillis(), e.getX(), e.getY());
+        if(this.inputManager.isRecording()){
+            InputAction ia = this.inputManager.addMouseMove(System.currentTimeMillis(), e.getX(), e.getY());
+            if(this.uiActivated){
+                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+            }
         }
     }
 }

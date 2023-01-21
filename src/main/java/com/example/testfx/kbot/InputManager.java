@@ -1,13 +1,9 @@
 package com.example.testfx.kbot;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class InputManager extends Thread {
-
-
-    private Thread activeThread = null;
+public class InputManager {
     private Queue<InputAction> currentInputs;
     private long startTime;
     private boolean isRecording = false;
@@ -27,71 +23,71 @@ public class InputManager extends Thread {
 
     public void playCurrentInputs(){
         ActionRunner actionRunner = new ActionRunner();
-        Queue<InputAction> newQueue = new LinkedList<>();
-        newQueue.addAll(this.currentInputs);
+        Queue<InputAction> newQueue = new LinkedList<>(this.currentInputs);
         actionRunner.run(newQueue);
-        this.activeThread = actionRunner;
         this.isPaused = false;
-
     }
 
     public void loopCurrentInputs(){
         LoopingActionRunner actionRunner = new LoopingActionRunner();
 
-        Queue<InputAction> newQueue = new LinkedList<>();
-        newQueue.addAll(this.currentInputs);
+        Queue<InputAction> newQueue = new LinkedList<>(this.currentInputs);
 
         this.isLooping = true;
         this.isPaused = false;
         actionRunner.run(newQueue, this);
-        this.activeThread = actionRunner;
     }
 
     private boolean isValidKey(int keyCode){
-        return ! (keyCode >=100 && keyCode <=105);
+        return keyCode >= 100 && keyCode <= 105;
     }
 
-    public void addKeyboardPress(long currentTime, int keyCode){
-        if(!this.isValidKey(keyCode)){
-            return;
-        }
+    public InputAction addKeyboardPress(long currentTime, int keyCode){
         long time = currentTime - this.startTime;
+        if(this.isValidKey(keyCode)){
+            return new InputAction(time,keyCode, InputAction.KEYBOARD_BUTTON_RELEASE, "Invalid key detected.");
+        }
         System.out.println("Adding action at time: "+time);
         InputAction ia = new InputAction(time,keyCode, InputAction.KEYBOARD_BUTTON_PRESS);
         this.currentInputs.add(ia);
+        return ia;
     }
 
-    public void addKeyboardRelease(long currentTime, int keyCode){
-        if(!this.isValidKey(keyCode)){
-            return;
-        }
+    public InputAction addKeyboardRelease(long currentTime, int keyCode){
         long time = currentTime - this.startTime;
+        if(this.isValidKey(keyCode)){
+            return new InputAction(time,keyCode, InputAction.KEYBOARD_BUTTON_RELEASE, "Invalid key detected.");
+        }
         System.out.println("Adding action at time: "+time);
         InputAction ia = new InputAction(time,keyCode, InputAction.KEYBOARD_BUTTON_RELEASE);
         this.currentInputs.add(ia);
+        return ia;
     }
 
-    public void addMouseButtonPress(long currentTime, int keyCode){
+    public InputAction addMouseButtonPress(long currentTime, int keyCode){
         long time = currentTime - this.startTime;
         System.out.println("Adding action at time: "+time);
         InputAction ia = new InputAction(time,keyCode, InputAction.MOUSE_BUTTON_PRESS);
         this.currentInputs.add(ia);
+        return ia;
     }
 
-    public void addMouseButtonRelease(long currentTime, int keyCode){
+    public InputAction addMouseButtonRelease(long currentTime, int keyCode){
         long time = currentTime - this.startTime;
         System.out.println("Adding action at time: "+time);
         InputAction ia = new InputAction(time,keyCode, InputAction.MOUSE_BUTTON_RELEASE);
         this.currentInputs.add(ia);
+        return ia;
     }
 
-    public void addMouseMove(long currentTime, int xPos, int yPos){
+    public InputAction addMouseMove(long currentTime, int xPos, int yPos){
         long time = currentTime - this.startTime;
 
         InputAction ia = new InputAction(time,xPos,yPos, InputAction.MOUSE_MOVEMENT);
         System.out.println(ia);
         this.currentInputs.add(ia);
         //InputAction{type='MOUSE_MOVEMENT', time=2148, keyCode=0, xPos=1124, yPos=504}
+        return ia;
     }
 
     public boolean isRecording(){
@@ -101,11 +97,6 @@ public class InputManager extends Thread {
     public void setIsRecording(boolean isRecording){
         this.isRecording = isRecording;
         this.startTime = System.currentTimeMillis();
-    }
-
-    public void setIsLooping(boolean isLooping){
-        this.isLooping = isLooping;
-        this.isPaused = !this.isPaused;
     }
 
     public boolean isLooping(){

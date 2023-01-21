@@ -5,9 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class LoopingActionRunner extends Thread{
-
     long prevActionTime  = 0;
-
 
     public void run(Queue<InputAction> actions, InputManager inputManager) {
 
@@ -17,7 +15,7 @@ public class LoopingActionRunner extends Thread{
             Robot robot = new Robot();
 
             System.out.println("Starting LoopingActionRunner with "+actions.size() +" actions.");
-            Thread.sleep(1000);
+            Thread.sleep(5000);
 
             Queue<InputAction> actionsShallowClone = new LinkedList<>(actions);
 
@@ -31,28 +29,21 @@ public class LoopingActionRunner extends Thread{
                     // Loop again.
                     actionsShallowClone = new LinkedList<>(actions);
                     this.prevActionTime = 0;
+                    Thread.sleep(5000);
+                    System.out.println("isPaused()");
+                    System.out.println(inputManager.isPaused());
                 }
 
                 InputAction inputAction = actionsShallowClone.remove();
-                System.out.println(inputAction.toString());
+//                System.out.println(inputAction.toString());
                 Thread.sleep(inputAction.time - prevActionTime);
 
-                switch(inputAction.getType()){
-                    case InputAction.KEYBOARD_BUTTON_PRESS:
-                        robot.keyPress(inputAction.getKeyboardCode());
-                        break;
-                    case InputAction.KEYBOARD_BUTTON_RELEASE:
-                        robot.keyRelease(inputAction.getKeyboardCode());
-                        break;
-                    case InputAction.MOUSE_MOVEMENT:
-                        robot.mouseMove(inputAction.xPos,inputAction.yPos);
-                        break;
-                    case InputAction.MOUSE_BUTTON_PRESS:
-                        robot.mousePress(inputAction.getMouseButtonCode());
-                        break;
-                    case InputAction.MOUSE_BUTTON_RELEASE:
-                        robot.mouseRelease(inputAction.getMouseButtonCode());
-                        break;
+                switch (inputAction.getType()) {
+                    case InputAction.KEYBOARD_BUTTON_PRESS -> robot.keyPress(inputAction.getKeyboardCode());
+                    case InputAction.KEYBOARD_BUTTON_RELEASE -> robot.keyRelease(inputAction.getKeyboardCode());
+                    case InputAction.MOUSE_MOVEMENT -> robot.mouseMove(inputAction.xPos, inputAction.yPos);
+                    case InputAction.MOUSE_BUTTON_PRESS -> robot.mousePress(inputAction.getMouseButtonCode());
+                    case InputAction.MOUSE_BUTTON_RELEASE -> robot.mouseRelease(inputAction.getMouseButtonCode());
                 }
 
                 prevActionTime = inputAction.time;
