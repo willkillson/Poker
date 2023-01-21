@@ -10,6 +10,7 @@ import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
 import com.github.kwhat.jnativehook.mouse.NativeMouseListener;
 import com.github.kwhat.jnativehook.mouse.NativeMouseMotionListener;
 import javafx.application.Application;
+import javafx.scene.input.KeyEvent;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +20,7 @@ public class InputTest implements
         NativeMouseListener,
         NativeMouseMotionListener {
 
-    private final InputManager inputManager;
+    public final InputManager inputManager;
 
     private final boolean uiActivated;
     private TableViewSample app;
@@ -85,6 +86,7 @@ public class InputTest implements
                 // 4 - numpad
                 System.out.println("Reset macro");
                 this.inputManager.resetActions();
+                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.RESET, null));
                 break;
             case 101:
                 // 5 - numpad

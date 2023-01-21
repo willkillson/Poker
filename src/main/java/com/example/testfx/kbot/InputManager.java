@@ -29,13 +29,12 @@ public class InputManager {
     }
 
     public void loopCurrentInputs(){
-        LoopingActionRunner actionRunner = new LoopingActionRunner();
-
-        Queue<InputAction> newQueue = new LinkedList<>(this.currentInputs);
-
         this.isLooping = true;
         this.isPaused = false;
-        actionRunner.run(newQueue, this);
+        Thread thread = new Thread(
+                new LoopingActionRunner(this,
+                        new LinkedList<>(this.currentInputs)));
+        thread.start();
     }
 
     private boolean isValidKey(int keyCode){

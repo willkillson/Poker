@@ -13,6 +13,12 @@ public class KeyLogEventHandler implements EventHandler<KeyLogEvent> {
 
     @Override
     public void handle(KeyLogEvent event) {
-        this.tableViewSample.data2.add(new InputActionModel(event.inputAction));
+        System.out.println(event.getEventType().getName());
+        if( event.getEventType().getName() == "KEY"){
+            this.tableViewSample.data2.add(new InputActionModel(event.inputAction));
+        }else if (event.getEventType().getName() == "RESET"){
+            this.tableViewSample.data2.remove(0,tableViewSample.data2.size());
+        }
+
     }
 }

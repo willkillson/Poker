@@ -4,40 +4,40 @@ import java.awt.*;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class LoopingActionRunner extends Thread{
+public class LoopingActionRunner implements Runnable{
+
+    private InputManager inputManager;
+    private Queue<InputAction> actions;
     long prevActionTime  = 0;
 
-    public void run(Queue<InputAction> actions, InputManager inputManager) {
+    LoopingActionRunner(InputManager inputManager, Queue<InputAction> actions){
+        this.inputManager = inputManager;
+        this.actions = actions;
+    }
 
+    @Override
+    public void run() {
         try{
 
             // Create an instance of Robot class
             Robot robot = new Robot();
 
             System.out.println("Starting LoopingActionRunner with "+actions.size() +" actions.");
-            Thread.sleep(5000);
 
             Queue<InputAction> actionsShallowClone = new LinkedList<>(actions);
 
-            while(inputManager.isLooping()){
+            while(true){
 
                 if(inputManager.isPaused()){
                     continue;
                 }
-
                 if(actionsShallowClone.isEmpty()){
                     // Loop again.
                     actionsShallowClone = new LinkedList<>(actions);
                     this.prevActionTime = 0;
-                    Thread.sleep(5000);
-                    System.out.println("isPaused()");
-                    System.out.println(inputManager.isPaused());
                 }
-
                 InputAction inputAction = actionsShallowClone.remove();
-//                System.out.println(inputAction.toString());
                 Thread.sleep(inputAction.time - prevActionTime);
-
                 switch (inputAction.getType()) {
                     case InputAction.KEYBOARD_BUTTON_PRESS -> robot.keyPress(inputAction.getKeyboardCode());
                     case InputAction.KEYBOARD_BUTTON_RELEASE -> robot.keyRelease(inputAction.getKeyboardCode());

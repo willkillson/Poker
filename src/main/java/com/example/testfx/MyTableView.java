@@ -7,5 +7,8 @@ public class MyTableView extends TableView {
         addEventHandler(
                 KeyLogEvent.KEY,
                 new KeyLogEventHandler(tableViewSample));
+        addEventHandler(
+                KeyLogEvent.RESET,
+                new KeyLogEventHandler(tableViewSample));
     }
 }
