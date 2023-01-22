@@ -1,11 +1,6 @@
 package com.example.testfx.kbot;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
-import com.example.testfx.model.Car;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.example.testfx.model.InputActionModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.LinkedList;
@@ -26,10 +21,9 @@ public class InputManager {
     public void saveActions(){
         try{
             ObjectMapper mapper = new ObjectMapper();
-            Car car = new Car("yellow", "renault");
-            String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(car);
+            InputActionModel ia = new InputActionModel(currentInputs.peek());
+            String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(ia);
             System.out.println(jsonString);
-
         }catch (Exception e){
             e.printStackTrace();
         }

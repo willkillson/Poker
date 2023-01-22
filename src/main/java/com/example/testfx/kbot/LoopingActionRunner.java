@@ -38,16 +38,16 @@ public class LoopingActionRunner implements Runnable{
                     this.prevActionTime = 0;
                 }
                 InputAction inputAction = actionsShallowClone.remove();
-                Thread.sleep(inputAction.time - prevActionTime);
+                Thread.sleep(inputAction.getTime() - prevActionTime);
                 switch (inputAction.getType()) {
                     case InputAction.KEYBOARD_BUTTON_PRESS -> robot.keyPress(inputAction.getKeyboardCode());
                     case InputAction.KEYBOARD_BUTTON_RELEASE -> robot.keyRelease(inputAction.getKeyboardCode());
-                    case InputAction.MOUSE_MOVEMENT -> robot.mouseMove(inputAction.xPos, inputAction.yPos);
+                    case InputAction.MOUSE_MOVEMENT -> robot.mouseMove(inputAction.getXPos(), inputAction.getYPos());
                     case InputAction.MOUSE_BUTTON_PRESS -> robot.mousePress(inputAction.getMouseButtonCode());
                     case InputAction.MOUSE_BUTTON_RELEASE -> robot.mouseRelease(inputAction.getMouseButtonCode());
                 }
 
-                prevActionTime = inputAction.time;
+                prevActionTime = inputAction.getTime();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();

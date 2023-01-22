@@ -1,10 +1,15 @@
 package com.example.testfx.kbot;
 
-
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
+@Setter
+@Getter
+@AllArgsConstructor
 public class InputAction {
 
     /**
@@ -20,13 +25,12 @@ public class InputAction {
     public static final String KEYBOARD_BUTTON_PRESS = "KEYBOARD_BUTTON_PRESS";
     public static final String KEYBOARD_BUTTON_RELEASE = "KEYBOARD_BUTTON_RELEASE";
 
-    public String type;
-    public long time;  // current time
-    public int keyCode; // raw input
-    public int xPos;
-    public int yPos;
-
-    public String description = "";
+    private String type;
+    private long time;  // current time
+    private int keyCode; // raw input
+    private int xPos;
+    private int yPos;
+    private String description = "";
 
     public InputAction(final long time,final int keyCode, final String type){
         this.keyCode = keyCode;

@@ -14,12 +14,12 @@ public class InputActionModel {
     public SimpleStringProperty description;
 
     public InputActionModel(InputAction inputAction){
-        this.type = new SimpleStringProperty(inputAction.type);
-        this.time = new SimpleLongProperty(inputAction.time);
-        this.keyCode = new SimpleIntegerProperty(inputAction.keyCode);
-        this.xPos = new SimpleIntegerProperty(inputAction.xPos);
-        this.yPos = new SimpleIntegerProperty(inputAction.yPos);
-        this.description = new SimpleStringProperty(inputAction.description);
+        this.type = new SimpleStringProperty(inputAction.getType());
+        this.time = new SimpleLongProperty(inputAction.getTime());
+        this.keyCode = new SimpleIntegerProperty(inputAction.getKeyCode());
+        this.xPos = new SimpleIntegerProperty(inputAction.getXPos());
+        this.yPos = new SimpleIntegerProperty(inputAction.getYPos());
+        this.description = new SimpleStringProperty(inputAction.getDescription());
     }
 
     // You must use these setters and getters.
