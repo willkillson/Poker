@@ -89,6 +89,9 @@ public class TableViewSample extends Application {
 
         //Creating the play button
         Button playButton = new Button("Save Commands");
+        playButton.setOnAction(event -> {
+            inputTest.inputManager.saveActions();
+        });
 
         //Creating the stop button
         Button stopButton = new Button("Load Commands");

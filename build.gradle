@@ -41,8 +41,16 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
     // kbot
-//    implementation 'com.1stleg:jnativehook:2.1.0'
     implementation 'com.github.kwhat:jnativehook:2.2.2'
+    // https://www.baeldung.com/jackson-object-mapper-tutoriala
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 test {

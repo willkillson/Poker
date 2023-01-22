@@ -1,16 +1,20 @@
 module com.example.testfx {
     requires javafx.controls;
     requires javafx.fxml;
-
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
     requires java.datatransfer;
     requires java.desktop;
     requires java.logging;
     requires com.github.kwhat.jnativehook;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires static lombok;
+
 
     opens com.example.testfx to javafx.fxml;
     exports com.example.testfx;
     exports com.example.testfx.model;
     opens com.example.testfx.model to javafx.fxml;
+
 }
