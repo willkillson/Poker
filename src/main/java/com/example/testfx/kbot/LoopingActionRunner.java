@@ -29,6 +29,7 @@ public class LoopingActionRunner implements Runnable{
             while(true){
 
                 if(inputManager.isPaused()){
+//                    System.out.println(inputManager.isPaused());
                     continue;
                 }
                 if(actionsShallowClone.isEmpty()){

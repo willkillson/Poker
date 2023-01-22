@@ -7,8 +7,8 @@ public class InputManager {
     private Queue<InputAction> currentInputs;
     private long startTime;
     private boolean isRecording = false;
-    private boolean isPaused = false;
-    private boolean isLooping = false;
+    private volatile boolean isPaused = false;
+    private Thread runThread = null;
 
 
     public InputManager(){
@@ -21,20 +21,14 @@ public class InputManager {
         this.isRecording = false;
     }
 
-    public void playCurrentInputs(){
-        ActionRunner actionRunner = new ActionRunner();
-        Queue<InputAction> newQueue = new LinkedList<>(this.currentInputs);
-        actionRunner.run(newQueue);
-        this.isPaused = false;
-    }
-
     public void loopCurrentInputs(){
-        this.isLooping = true;
         this.isPaused = false;
-        Thread thread = new Thread(
-                new LoopingActionRunner(this,
-                        new LinkedList<>(this.currentInputs)));
-        thread.start();
+        if(this.runThread == null){
+            this.runThread = new Thread(
+                    new LoopingActionRunner(this,
+                            new LinkedList<>(this.currentInputs)));
+            this.runThread.start();
+        }
     }
 
     private boolean isValidKey(int keyCode){
@@ -98,11 +92,7 @@ public class InputManager {
         this.startTime = System.currentTimeMillis();
     }
 
-    public boolean isLooping(){
-        return this.isLooping;
-    }
-
-    public void setIsPaused(){
+    public void toggleIsPaused(){
         this.isPaused = !this.isPaused;
     }
 

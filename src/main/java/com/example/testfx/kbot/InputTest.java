@@ -10,7 +10,6 @@ import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
 import com.github.kwhat.jnativehook.mouse.NativeMouseListener;
 import com.github.kwhat.jnativehook.mouse.NativeMouseMotionListener;
 import javafx.application.Application;
-import javafx.scene.input.KeyEvent;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,7 +23,6 @@ public class InputTest implements
 
     private final boolean uiActivated;
     private TableViewSample app;
-    private boolean isPrintKey = false;
 
     public static void main(String[] args) {
         new InputTest(null);
@@ -71,12 +69,6 @@ public class InputTest implements
                 System.out.println("Ending Recording...");
                 this.inputManager.setIsRecording(false);
                 break;
-            case 105:
-                // 9 - numpad
-                System.out.println("Playing recent recording...");
-                //x: 1468 y: 571847
-                this.inputManager.playCurrentInputs();
-                break;
             case 102:
                 // 6 - numpad
                 System.out.println("Playing/Looping recent recording...");
@@ -90,12 +82,9 @@ public class InputTest implements
                 break;
             case 101:
                 // 5 - numpad
-                System.out.println("Stopping Playing/Looping recent recording...");
-                this.inputManager.setIsPaused();
+                System.out.println("Toggle Playing/Looping recent recording...");
+                this.inputManager.toggleIsPaused();
                 break;
-            case 99:
-                System.out.println("PrintKey");
-                this.isPrintKey = !this.isPrintKey;
             default:
                 if(this.inputManager.isRecording()){
                     InputAction ia = this.inputManager.addKeyboardPress(System.currentTimeMillis(),e.getRawCode());
