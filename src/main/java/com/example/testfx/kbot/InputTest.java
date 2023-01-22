@@ -2,6 +2,7 @@ package com.example.testfx.kbot;
 
 import com.example.testfx.KeyLogEvent;
 import com.example.testfx.TableViewSample;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
@@ -11,6 +12,9 @@ import com.github.kwhat.jnativehook.mouse.NativeMouseListener;
 import com.github.kwhat.jnativehook.mouse.NativeMouseMotionListener;
 import javafx.application.Application;
 
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +27,10 @@ public class InputTest implements
 
     private final boolean uiActivated;
     private TableViewSample app;
+
+    public int current_mouse_x;
+
+    public int current_mouse_y;
 
     public static void main(String[] args) {
         new InputTest(null);
@@ -54,6 +62,31 @@ public class InputTest implements
         GlobalScreen.addNativeMouseMotionListener(this);
 
         this.inputManager = new InputManager();
+
+    }
+
+    public void loadActions(){
+        this.inputManager.resetActions();
+        try{
+            // create object mapper instance
+            ObjectMapper mapper = new ObjectMapper();
+
+            // convert JSON array to list of books
+            List<InputAction> commands =
+                    Arrays.asList(mapper.readValue(Paths.get("./data/currentInputs.json").toFile(), InputAction[].class));
+
+            // Convert InputActionModel to what is used in the InputManager
+            commands.forEach(command -> {
+//                InputAction newInputAction = new InputAction(command);
+                this.inputManager.currentInputs.add(command);
+                if(this.uiActivated){
+                    this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, command));
+                }
+            });
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -117,7 +150,8 @@ public class InputTest implements
     @Override
     public void nativeMousePressed(NativeMouseEvent e) {
         if(this.inputManager.isRecording()){
-            InputAction ia = this.inputManager.addMouseButtonPress(System.currentTimeMillis(),e.getButton());
+            InputAction ia = this.inputManager
+                    .addMouseButtonPress(System.currentTimeMillis(),e.getButton(), current_mouse_x, current_mouse_y);
             if(this.uiActivated){
                 this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
             }
@@ -127,7 +161,7 @@ public class InputTest implements
     @Override
     public void nativeMouseReleased(NativeMouseEvent e) {
         if(this.inputManager.isRecording()){
-            InputAction ia = this.inputManager.addMouseButtonRelease(System.currentTimeMillis(),e.getButton());
+            InputAction ia = this.inputManager.addMouseButtonRelease(System.currentTimeMillis(),e.getButton(), current_mouse_x, current_mouse_y);
             if(this.uiActivated){
                 this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
             }
@@ -142,16 +176,18 @@ public class InputTest implements
                 this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
             }
         }
+        this.current_mouse_x = e.getX();
+        this.current_mouse_y = e.getY();
     }
 
     @Override
     public void nativeMouseDragged(NativeMouseEvent e) {
-        if(this.inputManager.isRecording()){
-            InputAction ia = this.inputManager.addMouseMove(System.currentTimeMillis(), e.getX(), e.getY());
-            if(this.uiActivated){
-                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
-            }
-        }
+//        if(this.inputManager.isRecording()){
+//            InputAction ia = this.inputManager.addMouseMove(System.currentTimeMillis(), e.getX(), e.getY());
+//            if(this.uiActivated){
+//                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+//            }
+//        }
     }
 }
     

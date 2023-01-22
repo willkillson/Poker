@@ -4,6 +4,7 @@ import com.example.testfx.kbot.InputTest;
 import com.example.testfx.model.InputActionModel;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -58,15 +59,15 @@ public class TableViewSample extends Application {
         keyCode.setCellValueFactory(
                 new PropertyValueFactory<>("keyCode"));
 
-        TableColumn<InputActionModel, String> xPos = new TableColumn<>("Mouse X Position");
-        xPos.setMinWidth(150);
-        xPos.setCellValueFactory(
-                new PropertyValueFactory<>("xPos"));
+        TableColumn<InputActionModel, String> x = new TableColumn<>("Mouse X Position");
+        x.setMinWidth(150);
+        x.setCellValueFactory(
+                new PropertyValueFactory<>("x"));
 
-        TableColumn<InputActionModel, String> yPos = new TableColumn<>("Mouse Y Position");
-        yPos.setMinWidth(150);
-        yPos.setCellValueFactory(
-                new PropertyValueFactory<>("yPos"));
+        TableColumn<InputActionModel, String> y = new TableColumn<>("Mouse Y Position");
+        y.setMinWidth(150);
+        y.setCellValueFactory(
+                new PropertyValueFactory<>("y"));
 
         TableColumn<InputActionModel, String> description = new TableColumn<>("Description");
         description.setMinWidth(150);
@@ -75,7 +76,7 @@ public class TableViewSample extends Application {
 
         table.setItems(data2);
 
-        table.getColumns().addAll(type, time, keyCode, xPos, yPos, description);
+        table.getColumns().addAll(type, time, keyCode, x, y, description);
 
         //creating a text field
         TextArea textArea = new TextArea("""
@@ -94,7 +95,11 @@ public class TableViewSample extends Application {
         });
 
         //Creating the stop button
-        Button stopButton = new Button("Load Commands");
+        Button loadCommandsButton = new Button("Load Commands");
+        loadCommandsButton.setOnAction(event -> {
+            inputTest.loadActions();
+        });
+
 
         //Creating the resetButton button
         Button resetButton = new Button("Reset Commands");
@@ -113,14 +118,14 @@ public class TableViewSample extends Application {
         //Setting the margin to the nodes
         vboxCommands.setMargin(textArea, new Insets(40, 2, 2, 2));
         vboxCommands.setMargin(playButton, new Insets(1, 2, 2, 2));
-        vboxCommands.setMargin(stopButton, new Insets(1, 2, 2, 2));
+        vboxCommands.setMargin(loadCommandsButton, new Insets(1, 2, 2, 2));
         vboxCommands.setMargin(resetButton, new Insets(1, 2, 2, 2));
 
         //retrieving the observable list of the HBox
         ObservableList list = vboxCommands.getChildren();
 
         //Adding all the nodes to the observable list (HBox)
-        list.addAll(textArea, playButton, stopButton, resetButton);
+        list.addAll(textArea, playButton, loadCommandsButton, resetButton);
 
         //TABLE
         final VBox vbox = new VBox();

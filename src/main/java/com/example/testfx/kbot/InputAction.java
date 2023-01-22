@@ -2,6 +2,7 @@ package com.example.testfx.kbot;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.awt.event.InputEvent;
@@ -10,6 +11,7 @@ import java.awt.event.KeyEvent;
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class InputAction {
 
     /**
@@ -25,37 +27,58 @@ public class InputAction {
     public static final String KEYBOARD_BUTTON_PRESS = "KEYBOARD_BUTTON_PRESS";
     public static final String KEYBOARD_BUTTON_RELEASE = "KEYBOARD_BUTTON_RELEASE";
 
-    private String type;
-    private long time;  // current time
-    private int keyCode; // raw input
-    private int xPos;
-    private int yPos;
+    private String type = "";
+    private long time = 0;  // current time
+    private int keyCode = -999; // raw input
+    private int x = -999;
+    private int y = -999;
     private String description = "";
 
-    public InputAction(final long time,final int keyCode, final String type){
-        this.keyCode = keyCode;
-        this.time = time;
-        this.type = type;
-    }
+//    public InputAction(final long time,final int keyCode, final String type){
+//        this.keyCode = keyCode;
+//        this.time = time;
+//        this.type = type;
+//    }
+//
+//    public InputAction(final long time,final int xPos, int yPos,final String type){
+//        this.time = time;
+//        this.type = type;
+//        this.x = xPos;
+//        this.y = yPos;
+//    }
 
-    public InputAction(final long time,final int xPos, int yPos,final String type){
-        this.time = time;
-        this.type = type;
-        this.xPos = xPos;
-        this.yPos = yPos;
-    }
+//    public InputAction(final long time,final int keyCode, final String type, final String description){
+//        this.keyCode = keyCode;
+//        this.time = time;
+//        this.type = type;
+//        this.description = description;
+//    }
 
-    public InputAction(final long time,final int keyCode, final String type, final String description){
-        this.keyCode = keyCode;
-        this.time = time;
-        this.type = type;
-        this.description = description;
-    }
+//    public InputAction(InputActionModel inputActionModel){
+//        this.x = inputActionModel.getX();
+//        this.y = inputActionModel.getY();
+//        this.description = inputActionModel.getDescription();
+//        this.time = inputActionModel.getTime();
+//        this.keyCode = inputActionModel.getKeyCode();
+//    }
 
-    public String getType(){
-        return this.type;
-    }
+//    public InputAction(InputAction inputAction){
+//        this.type = inputAction.getType();
+//        this.keyCode = inputAction.getKeyCode();
+//        this.x = inputAction.getX();
+//        this.y = inputAction.getY();
+//        this.description = inputAction.getDescription();
+//        this.time = inputAction.getTime();
+//    }
 
+//    public InputAction(InputActionPojo command) {
+//        this.type = command.getType();
+//        this.keyCode = command.getKeyCode();
+//        this.x = command.getX();
+//        this.y = command.getY();
+//        this.description = command.getDescription();
+//        this.time = command.getTime();
+//    }
 
     @Override
     public String toString() {
@@ -63,8 +86,8 @@ public class InputAction {
                 "type='" + type + '\'' +
                 ", time=" + time +
                 ", keyCode=" + keyCode +
-                ", xPos=" + xPos +
-                ", yPos=" + yPos +
+                ", xPos=" + x +
+                ", yPos=" + y +
                 '}';
     }
 
@@ -88,7 +111,7 @@ public class InputAction {
 
         }else if(this.keyCode==2){
             //right button
-            return InputEvent.BUTTON2_DOWN_MASK;
+            return InputEvent.BUTTON3_DOWN_MASK;
         }else{
             return 0;
         }

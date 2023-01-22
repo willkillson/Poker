@@ -1,4 +1,5 @@
 package com.example.testfx;
+import javafx.collections.ListChangeListener;
 import javafx.scene.control.TableView;
 
 public class MyTableView extends TableView {
@@ -10,5 +11,7 @@ public class MyTableView extends TableView {
         addEventHandler(
                 KeyLogEvent.RESET,
                 new KeyLogEventHandler(tableViewSample));
+
+
     }
 }

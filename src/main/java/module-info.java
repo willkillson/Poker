@@ -13,6 +13,8 @@ module com.example.testfx {
 
 
     opens com.example.testfx to javafx.fxml;
+    opens com.example.testfx.kbot to javafx.fxml;
+    exports com.example.testfx.kbot;
     exports com.example.testfx;
     exports com.example.testfx.model;
     opens com.example.testfx.model to javafx.fxml;

@@ -1,24 +1,26 @@
 package com.example.testfx.model;
 
 import com.example.testfx.kbot.InputAction;
+import com.fasterxml.jackson.annotation.JsonValue;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
+
 public class InputActionModel {
-    public SimpleStringProperty type;
-    public SimpleLongProperty time;  // current time
-    public SimpleIntegerProperty keyCode; // raw input
-    public SimpleIntegerProperty xPos;
-    public SimpleIntegerProperty yPos;
-    public SimpleStringProperty description;
+    private SimpleStringProperty type;
+    private SimpleLongProperty time;  // current time
+    private SimpleIntegerProperty keyCode; // raw input
+    private SimpleIntegerProperty x;
+    private SimpleIntegerProperty y;
+    private SimpleStringProperty description;
 
     public InputActionModel(InputAction inputAction){
         this.type = new SimpleStringProperty(inputAction.getType());
         this.time = new SimpleLongProperty(inputAction.getTime());
         this.keyCode = new SimpleIntegerProperty(inputAction.getKeyCode());
-        this.xPos = new SimpleIntegerProperty(inputAction.getXPos());
-        this.yPos = new SimpleIntegerProperty(inputAction.getYPos());
+        this.x = new SimpleIntegerProperty(inputAction.getX());
+        this.y = new SimpleIntegerProperty(inputAction.getY());
         this.description = new SimpleStringProperty(inputAction.getDescription());
     }
 
@@ -35,12 +37,12 @@ public class InputActionModel {
         return keyCode.get();
     }
 
-    public int getXPos(){
-        return xPos.get();
+    public int getX(){
+        return x.get();
     }
 
-    public int getYPos(){
-        return yPos.get();
+    public int getY(){
+        return y.get();
     }
 
     public String getDescription(){
