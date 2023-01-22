@@ -13,7 +13,6 @@ public class KeyLogEvent extends Event {
             new EventType<>(Event.ANY, "KEY");
 
 
-
     public KeyLogEvent(EventType<? extends Event> eventType, InputAction inputAction) {
         super(eventType);
         this.inputAction = inputAction;

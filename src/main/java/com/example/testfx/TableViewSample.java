@@ -4,7 +4,6 @@ import com.example.testfx.kbot.InputTest;
 import com.example.testfx.model.InputActionModel;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -90,15 +89,11 @@ public class TableViewSample extends Application {
 
         //Creating the play button
         Button playButton = new Button("Save Commands");
-        playButton.setOnAction(event -> {
-            inputTest.inputManager.saveActions();
-        });
+        playButton.setOnAction(event -> inputTest.inputManager.saveActions());
 
         //Creating the stop button
         Button loadCommandsButton = new Button("Load Commands");
-        loadCommandsButton.setOnAction(event -> {
-            inputTest.loadActions();
-        });
+        loadCommandsButton.setOnAction(event -> inputTest.loadActions());
 
 
         //Creating the resetButton button

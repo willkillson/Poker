@@ -43,7 +43,7 @@ public class InputManager {
         this.startTime = System.currentTimeMillis();
         this.isRecording = false;
         if(runThread != null)
-            runThread.stop();
+            runThread.interrupt();
     }
 
     public void loopCurrentInputs(){

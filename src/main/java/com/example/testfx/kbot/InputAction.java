@@ -34,52 +34,6 @@ public class InputAction {
     private int y = -999;
     private String description = "";
 
-//    public InputAction(final long time,final int keyCode, final String type){
-//        this.keyCode = keyCode;
-//        this.time = time;
-//        this.type = type;
-//    }
-//
-//    public InputAction(final long time,final int xPos, int yPos,final String type){
-//        this.time = time;
-//        this.type = type;
-//        this.x = xPos;
-//        this.y = yPos;
-//    }
-
-//    public InputAction(final long time,final int keyCode, final String type, final String description){
-//        this.keyCode = keyCode;
-//        this.time = time;
-//        this.type = type;
-//        this.description = description;
-//    }
-
-//    public InputAction(InputActionModel inputActionModel){
-//        this.x = inputActionModel.getX();
-//        this.y = inputActionModel.getY();
-//        this.description = inputActionModel.getDescription();
-//        this.time = inputActionModel.getTime();
-//        this.keyCode = inputActionModel.getKeyCode();
-//    }
-
-//    public InputAction(InputAction inputAction){
-//        this.type = inputAction.getType();
-//        this.keyCode = inputAction.getKeyCode();
-//        this.x = inputAction.getX();
-//        this.y = inputAction.getY();
-//        this.description = inputAction.getDescription();
-//        this.time = inputAction.getTime();
-//    }
-
-//    public InputAction(InputActionPojo command) {
-//        this.type = command.getType();
-//        this.keyCode = command.getKeyCode();
-//        this.x = command.getX();
-//        this.y = command.getY();
-//        this.description = command.getDescription();
-//        this.time = command.getTime();
-//    }
-
     @Override
     public String toString() {
         return "InputAction{" +

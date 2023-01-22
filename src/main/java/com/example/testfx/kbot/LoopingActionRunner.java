@@ -6,7 +6,7 @@ import java.util.Queue;
 
 public class LoopingActionRunner implements Runnable{
 
-    private InputManager inputManager;
+    private final InputManager inputManager;
     long prevActionTime  = 0;
 
     LoopingActionRunner(InputManager inputManager){
@@ -24,31 +24,34 @@ public class LoopingActionRunner implements Runnable{
 
             Queue<InputAction> actionsShallowClone = new LinkedList<>(inputManager.currentInputs);
 
-            while(true){
+            while(!inputManager.isPaused()){
 
-                if(inputManager.isPaused()){
-
-                    continue;
-                }
                 if(actionsShallowClone.isEmpty()){
                     // Loop again.
                     actionsShallowClone = new LinkedList<>(inputManager.currentInputs);
                     this.prevActionTime = 0;
                 }
+
                 InputAction inputAction = actionsShallowClone.remove();
-                Thread.sleep(inputAction.getTime() - prevActionTime);
+                long wait = inputAction.getTime() - prevActionTime;
+
+                if( wait >= 0){
+                    Thread.sleep(wait);
+                }
+
                 switch (inputAction.getType()) {
-                    case InputAction.KEYBOARD_BUTTON_PRESS -> robot.keyPress(inputAction.getKeyboardCode());
-                    case InputAction.KEYBOARD_BUTTON_RELEASE -> robot.keyRelease(inputAction.getKeyboardCode());
-                    case InputAction.MOUSE_MOVEMENT -> robot.mouseMove(inputAction.getX(), inputAction.getY());
-                    case InputAction.MOUSE_BUTTON_PRESS -> {
-//                        robot.mouseMove(inputAction.getX(), inputAction.getY());
-                        robot.mousePress(inputAction.getMouseButtonCode());
-                    }
-                    case InputAction.MOUSE_BUTTON_RELEASE -> {
-//                        robot.mouseMove(inputAction.getX(), inputAction.getY());
-                        robot.mouseRelease(inputAction.getMouseButtonCode());
-                    }
+                    case InputAction.KEYBOARD_BUTTON_PRESS ->
+                            robot.keyPress(inputAction.getKeyboardCode());
+                    case InputAction.KEYBOARD_BUTTON_RELEASE ->
+                            robot.keyRelease(inputAction.getKeyboardCode());
+                    case InputAction.MOUSE_MOVEMENT ->
+                            robot.mouseMove(inputAction.getX(), inputAction.getY());
+                    case InputAction.MOUSE_BUTTON_PRESS ->
+                            //robot.mouseMove(inputAction.getX(), inputAction.getY());
+                            robot.mousePress(inputAction.getMouseButtonCode());
+                    case InputAction.MOUSE_BUTTON_RELEASE ->
+                            //robot.mouseMove(inputAction.getX(), inputAction.getY());
+                            robot.mouseRelease(inputAction.getMouseButtonCode());
                 }
 
                 prevActionTime = inputAction.getTime();

@@ -182,12 +182,6 @@ public class InputTest implements
 
     @Override
     public void nativeMouseDragged(NativeMouseEvent e) {
-//        if(this.inputManager.isRecording()){
-//            InputAction ia = this.inputManager.addMouseMove(System.currentTimeMillis(), e.getX(), e.getY());
-//            if(this.uiActivated){
-//                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
-//            }
-//        }
     }
 }
     

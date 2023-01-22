@@ -1,19 +1,17 @@
 package com.example.testfx.model;
 
 import com.example.testfx.kbot.InputAction;
-import com.fasterxml.jackson.annotation.JsonValue;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-
 public class InputActionModel {
-    private SimpleStringProperty type;
-    private SimpleLongProperty time;  // current time
-    private SimpleIntegerProperty keyCode; // raw input
-    private SimpleIntegerProperty x;
-    private SimpleIntegerProperty y;
-    private SimpleStringProperty description;
+    private final SimpleStringProperty type;
+    private final SimpleLongProperty time;  // current time
+    private final SimpleIntegerProperty keyCode; // raw input
+    private final SimpleIntegerProperty x;
+    private final SimpleIntegerProperty y;
+    private final SimpleStringProperty description;
 
     public InputActionModel(InputAction inputAction){
         this.type = new SimpleStringProperty(inputAction.getType());
