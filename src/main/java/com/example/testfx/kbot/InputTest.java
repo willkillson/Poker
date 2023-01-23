@@ -2,6 +2,7 @@ package com.example.testfx.kbot;
 
 import com.example.testfx.KeyLogEvent;
 import com.example.testfx.TableViewSample;
+import com.example.testfx.kbot.vision.Vision;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
@@ -34,6 +35,7 @@ public class InputTest implements
     public int current_mouse_y;
 
     public static void main(String[] args) {
+        new Vision();
         new InputTest(null);
     }
 

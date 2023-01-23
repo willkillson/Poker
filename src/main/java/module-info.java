@@ -9,14 +9,20 @@ module com.example.testfx {
     requires com.github.kwhat.jnativehook;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+
     requires static lombok;
+    requires static opencv;
 
 
-    opens com.example.testfx to javafx.fxml;
-    opens com.example.testfx.kbot to javafx.fxml;
+
     exports com.example.testfx.kbot;
     exports com.example.testfx;
     exports com.example.testfx.model;
+    exports com.example.testfx.kbot.vision;
+
+    opens com.example.testfx to javafx.fxml;
+    opens com.example.testfx.kbot to javafx.fxml;
     opens com.example.testfx.model to javafx.fxml;
+    opens com.example.testfx.kbot.vision to javafx.fxml;
 
 }

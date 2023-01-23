@@ -44,3 +44,4 @@ bin/
 
 # project specific
 /data/*.json
+/data/images/currentInputs/needles/*.png

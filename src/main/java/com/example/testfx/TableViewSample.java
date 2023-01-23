@@ -8,21 +8,17 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.scene.control.Button;
 
 public class TableViewSample extends Application {
 
     public MyTableView table;
-    final ObservableList<InputActionModel> data2 =
-            FXCollections.observableArrayList();
+
 
     public static void main(String[] args) {
         launch(args);
@@ -30,7 +26,7 @@ public class TableViewSample extends Application {
 
     @Override
     public void start(Stage stage) {
-        this.table = new MyTableView(this);
+        this.table = new MyTableView();
         InputTest inputTest = new InputTest(this);
 
         Scene scene = new Scene(new Group());
@@ -38,44 +34,6 @@ public class TableViewSample extends Application {
         stage.setWidth(1010);
         stage.setHeight(550);
 
-        final Label label = new Label("Current Commands");
-        label.setFont(new Font("Arial", 20));
-
-        table.setEditable(true);
-
-        TableColumn<InputActionModel, String> type = new TableColumn<>("Type");
-        type.setMinWidth(150);
-        type.setCellValueFactory(
-                new PropertyValueFactory<>("type"));
-
-        TableColumn<InputActionModel, String> time = new TableColumn<>("Time");
-        time.setMinWidth(50);
-        time.setCellValueFactory(
-                new PropertyValueFactory<>("time"));
-
-        TableColumn<InputActionModel, String> keyCode = new TableColumn<>("Key Code");
-        keyCode.setMinWidth(50);
-        keyCode.setCellValueFactory(
-                new PropertyValueFactory<>("keyCode"));
-
-        TableColumn<InputActionModel, String> x = new TableColumn<>("Mouse X Position");
-        x.setMinWidth(150);
-        x.setCellValueFactory(
-                new PropertyValueFactory<>("x"));
-
-        TableColumn<InputActionModel, String> y = new TableColumn<>("Mouse Y Position");
-        y.setMinWidth(150);
-        y.setCellValueFactory(
-                new PropertyValueFactory<>("y"));
-
-        TableColumn<InputActionModel, String> description = new TableColumn<>("Description");
-        description.setMinWidth(150);
-        description.setCellValueFactory(
-                new PropertyValueFactory<>("description"));
-
-        table.setItems(data2);
-
-        table.getColumns().addAll(type, time, keyCode, x, y, description);
 
         //creating a text field
         TextArea textArea = new TextArea("""
@@ -101,7 +59,7 @@ public class TableViewSample extends Application {
 
         resetButton.setOnAction(event -> {
             inputTest.inputManager.resetActions();
-            data2.remove(0,data2.size());
+            table.data2.remove(0,table.data2.size());
         });
 
         //Instantiating the HBox class
@@ -122,15 +80,9 @@ public class TableViewSample extends Application {
         //Adding all the nodes to the observable list (HBox)
         list.addAll(textArea, playButton, loadCommandsButton, resetButton);
 
-        //TABLE
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 0, 0, 10));
-        vbox.getChildren().addAll(label, table);
-
         HBox finalHBox = new HBox();
 
-        finalHBox.getChildren().addAll(vbox);
+        finalHBox.getChildren().addAll(table.vbox);
         finalHBox.getChildren().addAll(vboxCommands);
 
         ((Group) scene.getRoot()).getChildren().addAll(finalHBox);
