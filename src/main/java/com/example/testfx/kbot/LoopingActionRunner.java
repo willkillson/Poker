@@ -40,18 +40,28 @@ public class LoopingActionRunner implements Runnable{
                 }
 
                 switch (inputAction.getType()) {
-                    case InputAction.KEYBOARD_BUTTON_PRESS ->
-                            robot.keyPress(inputAction.getKeyboardCode());
-                    case InputAction.KEYBOARD_BUTTON_RELEASE ->
-                            robot.keyRelease(inputAction.getKeyboardCode());
-                    case InputAction.MOUSE_MOVEMENT ->
-                            robot.mouseMove(inputAction.getX(), inputAction.getY());
-                    case InputAction.MOUSE_BUTTON_PRESS ->
-                            //robot.mouseMove(inputAction.getX(), inputAction.getY());
-                            robot.mousePress(inputAction.getMouseButtonCode());
-                    case InputAction.MOUSE_BUTTON_RELEASE ->
-                            //robot.mouseMove(inputAction.getX(), inputAction.getY());
-                            robot.mouseRelease(inputAction.getMouseButtonCode());
+                    case InputAction.KEYBOARD_BUTTON_PRESS ->{
+                        inputManager.runCommand(inputAction);
+                        robot.keyPress(inputAction.getKeyboardCode());
+                    }
+                    case InputAction.KEYBOARD_BUTTON_RELEASE ->{
+                        inputManager.runCommand(inputAction);
+                        robot.keyRelease(inputAction.getKeyboardCode());
+                    }
+                    case InputAction.MOUSE_MOVEMENT ->{
+                        inputManager.runCommand(inputAction);
+                        robot.mouseMove(inputAction.getX(), inputAction.getY());
+                    }
+                    case InputAction.MOUSE_BUTTON_PRESS ->{
+                        inputManager.runCommand(inputAction);
+                        //robot.mouseMove(inputAction.getX(), inputAction.getY());
+                        robot.mousePress(inputAction.getMouseButtonCode());
+                    }
+                    case InputAction.MOUSE_BUTTON_RELEASE ->{
+                        inputManager.runCommand(inputAction);
+                        //robot.mouseMove(inputAction.getX(), inputAction.getY());
+                        robot.mouseRelease(inputAction.getMouseButtonCode());
+                    }
                 }
 
                 prevActionTime = inputAction.getTime();

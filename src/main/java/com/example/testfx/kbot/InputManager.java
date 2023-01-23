@@ -1,5 +1,6 @@
 package com.example.testfx.kbot;
 
+import com.example.testfx.KeyLogEvent;
 import com.example.testfx.model.InputActionModel;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,8 +16,11 @@ public class InputManager {
     private volatile boolean isPaused = false;
     private Thread runThread = null;
 
-    public InputManager(){
+    public final InputTest inputTest;
+
+    public InputManager(InputTest inputTest){
         this.resetActions();
+        this.inputTest = inputTest;
     }
 
     public void saveActions(){
@@ -44,6 +48,10 @@ public class InputManager {
         this.isRecording = false;
         if(runThread != null)
             runThread.interrupt();
+    }
+
+    public void runCommand(InputAction inputAction){
+        this.inputTest.runCommand(inputAction);
     }
 
     public void loopCurrentInputs(){

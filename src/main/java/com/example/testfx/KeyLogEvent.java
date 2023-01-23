@@ -12,6 +12,9 @@ public class KeyLogEvent extends Event {
     public static final EventType<KeyLogEvent> KEY =
             new EventType<>(Event.ANY, "KEY");
 
+    public static final EventType<KeyLogEvent> RUN_COMMAND =
+            new EventType<>(Event.ANY, "RUN_COMMAND");
+
 
     public KeyLogEvent(EventType<? extends Event> eventType, InputAction inputAction) {
         super(eventType);

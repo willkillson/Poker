@@ -10,6 +10,9 @@ public class MyTableView extends TableView {
         addEventHandler(
                 KeyLogEvent.RESET,
                 new KeyLogEventHandler(tableViewSample));
+        addEventHandler(
+                KeyLogEvent.RUN_COMMAND,
+                new KeyLogEventHandler(tableViewSample));
 
 
     }

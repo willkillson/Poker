@@ -25,6 +25,7 @@ public class InputTest implements
 
     public final InputManager inputManager;
 
+
     private final boolean uiActivated;
     private TableViewSample app;
 
@@ -61,7 +62,7 @@ public class InputTest implements
         GlobalScreen.addNativeMouseListener(this);
         GlobalScreen.addNativeMouseMotionListener(this);
 
-        this.inputManager = new InputManager();
+        this.inputManager = new InputManager(this);
 
     }
 
@@ -89,6 +90,16 @@ public class InputTest implements
         }
 
     }
+
+    public void runCommand(InputAction inputAction){
+        if(this.uiActivated){
+            this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.RUN_COMMAND, inputAction));
+        }
+    }
+
+    ///////////////////////////////////////
+    // Native Key Presses
+    ///////////////////////////////////////
 
     public void nativeKeyPressed(NativeKeyEvent e) {
         switch(e.getRawCode()){
