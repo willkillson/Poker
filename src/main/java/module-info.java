@@ -9,6 +9,7 @@ module com.example.testfx {
     requires com.github.kwhat.jnativehook;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires javafx.swing;
 
     requires static lombok;
     requires static opencv;

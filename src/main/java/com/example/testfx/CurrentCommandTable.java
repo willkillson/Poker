@@ -1,14 +1,38 @@
 package com.example.testfx;
 import com.example.testfx.kbot.InputTest;
+import com.example.testfx.kbot.LoopingActionRunner;
 import com.example.testfx.model.InputActionModel;
+import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+
+import java.awt.Robot;
+import java.awt.AWTException;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Random;
 
 public class CurrentCommandTable extends TableView {
 
@@ -17,13 +41,13 @@ public class CurrentCommandTable extends TableView {
     public final ObservableList<InputActionModel> data2 =
             FXCollections.observableArrayList();
 
-    public CurrentCommandTable(InputTest inputTest){
+    public CurrentCommandTable(InputTest inputTest) throws FileNotFoundException, AWTException {
 
         addEventHandler(
-                NativeKeyEvent.KEY,
+                NativeKeyEvent.RESET,
                 new NativeKeyEventHandler(this));
         addEventHandler(
-                NativeKeyEvent.RESET,
+                NativeKeyEvent.KEY,
                 new NativeKeyEventHandler(this));
         addEventHandler(
                 NativeKeyEvent.RUN_COMMAND,
@@ -114,10 +138,10 @@ public class CurrentCommandTable extends TableView {
         vboxCommands.setMargin(loadCommandsButton, new Insets(1, 2, 2, 2));
         vboxCommands.setMargin(resetButton, new Insets(1, 2, 2, 2));
 
-        //retrieving the observable list of the HBox
+        //retrieving the observable list of the VBox
         ObservableList list = vboxCommands.getChildren();
 
-        //Adding all the nodes to the observable list (HBox)
+        //Adding all the nodes to the observable list (VBox)
         list.addAll(textArea, playButton, loadCommandsButton, resetButton);
 
         this.hBox = new HBox();
@@ -126,4 +150,5 @@ public class CurrentCommandTable extends TableView {
 
 
     }
+
 }
