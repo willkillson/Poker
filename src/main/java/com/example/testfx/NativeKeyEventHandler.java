@@ -2,21 +2,20 @@ package com.example.testfx;
 
 import com.example.testfx.model.InputActionModel;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 
 import java.util.Optional;
 
-public class KeyLogEventHandler implements EventHandler<KeyLogEvent> {
+public class NativeKeyEventHandler implements EventHandler<NativeKeyEvent> {
 
-    private final MyTableView table;
+    private final CurrentCommandTable table;
 
-    public KeyLogEventHandler( MyTableView table) {
+    public NativeKeyEventHandler(CurrentCommandTable table) {
         this.table = table;
     }
 
     @Override
-    public void handle(KeyLogEvent event) {
+    public void handle(NativeKeyEvent event) {
         System.out.println(event.getEventType().getName());
 
         switch(event.getEventType().getName()){

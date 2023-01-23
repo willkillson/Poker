@@ -1,12 +1,11 @@
 package com.example.testfx.kbot;
 
-import com.example.testfx.KeyLogEvent;
-import com.example.testfx.TableViewSample;
+import com.example.testfx.NativeKeyEvent;
+import com.example.testfx.MainApplication;
 import com.example.testfx.kbot.vision.Vision;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
-import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
 import com.github.kwhat.jnativehook.mouse.NativeMouseEvent;
 import com.github.kwhat.jnativehook.mouse.NativeMouseListener;
@@ -28,7 +27,7 @@ public class InputTest implements
 
 
     private final boolean uiActivated;
-    private TableViewSample app;
+    private MainApplication app;
 
     public int current_mouse_x;
 
@@ -44,7 +43,7 @@ public class InputTest implements
             this.uiActivated = false;
         }else{
             this.uiActivated = true;
-            this.app = (TableViewSample) app;
+            this.app = (MainApplication) app;
         }
 
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
@@ -83,7 +82,7 @@ public class InputTest implements
 //                InputAction newInputAction = new InputAction(command);
                 this.inputManager.currentInputs.add(command);
                 if(this.uiActivated){
-                    this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, command));
+                    this.app.table.fireEvent(new NativeKeyEvent(NativeKeyEvent.KEY, command));
                 }
             });
 
@@ -95,7 +94,7 @@ public class InputTest implements
 
     public void runCommand(InputAction inputAction){
         if(this.uiActivated){
-            this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.RUN_COMMAND, inputAction));
+            this.app.table.fireEvent(new NativeKeyEvent(NativeKeyEvent.RUN_COMMAND, inputAction));
         }
     }
 
@@ -103,7 +102,7 @@ public class InputTest implements
     // Native Key Presses
     ///////////////////////////////////////
 
-    public void nativeKeyPressed(NativeKeyEvent e) {
+    public void nativeKeyPressed(com.github.kwhat.jnativehook.keyboard.NativeKeyEvent e) {
         switch(e.getRawCode()){
             case 103:
                 // 7 - numpad
@@ -124,7 +123,7 @@ public class InputTest implements
                 // 4 - numpad
                 System.out.println("Reset macro");
                 this.inputManager.resetActions();
-                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.RESET, null));
+                this.app.table.fireEvent(new NativeKeyEvent(NativeKeyEvent.RESET, null));
                 break;
             case 101:
                 // 5 - numpad
@@ -135,22 +134,22 @@ public class InputTest implements
                 if(this.inputManager.isRecording()){
                     InputAction ia = this.inputManager.addKeyboardPress(System.currentTimeMillis(),e.getRawCode());
                     if(this.uiActivated){
-                        this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+                        this.app.table.fireEvent(new NativeKeyEvent(NativeKeyEvent.KEY, ia));
                     }
                 }
         }
     }
 
-    public void nativeKeyReleased(NativeKeyEvent e) {
+    public void nativeKeyReleased(com.github.kwhat.jnativehook.keyboard.NativeKeyEvent e) {
         if(this.inputManager.isRecording()){
             InputAction ia = this.inputManager.addKeyboardRelease(System.currentTimeMillis(),e.getRawCode());
             if(this.uiActivated){
-                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+                this.app.table.fireEvent(new NativeKeyEvent(NativeKeyEvent.KEY, ia));
             }
         }
     }
 
-    public void nativeKeyTyped(NativeKeyEvent e) {
+    public void nativeKeyTyped(com.github.kwhat.jnativehook.keyboard.NativeKeyEvent e) {
 //        System.out.println("Key Typed: " + NativeKeyEvent.getKeyText(e.getKeyCode()));
     }
 
@@ -166,7 +165,7 @@ public class InputTest implements
             InputAction ia = this.inputManager
                     .addMouseButtonPress(System.currentTimeMillis(),e.getButton(), current_mouse_x, current_mouse_y);
             if(this.uiActivated){
-                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+                this.app.table.fireEvent(new NativeKeyEvent(NativeKeyEvent.KEY, ia));
             }
         }
     }
@@ -176,7 +175,7 @@ public class InputTest implements
         if(this.inputManager.isRecording()){
             InputAction ia = this.inputManager.addMouseButtonRelease(System.currentTimeMillis(),e.getButton(), current_mouse_x, current_mouse_y);
             if(this.uiActivated){
-                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+                this.app.table.fireEvent(new NativeKeyEvent(NativeKeyEvent.KEY, ia));
             }
         }
     }
@@ -186,7 +185,7 @@ public class InputTest implements
         if(this.inputManager.isRecording()){
             InputAction ia = this.inputManager.addMouseMove(System.currentTimeMillis(), e.getX(), e.getY());
             if(this.uiActivated){
-                this.app.table.fireEvent(new KeyLogEvent(KeyLogEvent.KEY, ia));
+                this.app.table.fireEvent(new NativeKeyEvent(NativeKeyEvent.KEY, ia));
             }
         }
         this.current_mouse_x = e.getX();

@@ -1,6 +1,5 @@
 package com.example.testfx.kbot;
 
-import com.example.testfx.KeyLogEvent;
 import com.example.testfx.model.InputActionModel;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
