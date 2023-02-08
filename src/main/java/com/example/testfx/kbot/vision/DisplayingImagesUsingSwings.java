@@ -38,17 +38,26 @@ public class DisplayingImagesUsingSwings {
         Mat needle_image = Imgcodecs.imread(needle_file, Imgcodecs.IMREAD_UNCHANGED);
         Mat hay_stack_image = Imgcodecs.imread(haystack_file, Imgcodecs.IMREAD_UNCHANGED);
 
+        ImageIcon imageIcon = this.matchNeedleToHaystack(needle_image, hay_stack_image);
+
+        JFrame frame = new JFrame();
+        frame.getContentPane().add(new JLabel(imageIcon));
+        frame.pack();
+        frame.setVisible(true);
+        System.out.println("Image Loaded");
+    }
+
+    public ImageIcon matchNeedleToHaystack(Mat needle, Mat haystack) throws IOException {
         // Set up the result (java)
         Mat result = new Mat();
         Mat img_display = new Mat();
-        hay_stack_image.copyTo(img_display);
-        int result_cols = hay_stack_image.cols() - needle_image.cols() + 1;
-        int result_rows = hay_stack_image.rows() - needle_image.rows() + 1;
+        haystack.copyTo(img_display);
+        int result_cols = haystack.cols() - needle.cols() + 1;
+        int result_rows = haystack.rows() - needle.rows() + 1;
         result.create(result_rows, result_cols, CvType.CV_32FC1);
 
         // Modifies result
-        Imgproc.matchTemplate(hay_stack_image, needle_image, result, Imgproc.TM_CCOEFF_NORMED);
-
+        Imgproc.matchTemplate(haystack, needle, result, Imgproc.TM_CCOEFF_NORMED);
 
         Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
 
@@ -62,7 +71,7 @@ public class DisplayingImagesUsingSwings {
         Imgproc.rectangle(
                 img_display,
                 matchLoc,
-                new Point(matchLoc.x + needle_image.cols(), matchLoc.y + needle_image.rows()),
+                new Point(matchLoc.x + needle.cols(), matchLoc.y + needle.rows()),
                 new Scalar(0, 0, 0),
                 2,
                 Imgproc.LINE_4,
@@ -78,12 +87,7 @@ public class DisplayingImagesUsingSwings {
 //                0);
 
         BufferedImage bufferedImage = DisplayingImagesUsingSwings.Mat2BufferedImage(img_display);
-
-        JFrame frame = new JFrame();
-        frame.getContentPane().add(new JLabel(new ImageIcon(bufferedImage)));
-        frame.pack();
-        frame.setVisible(true);
-        System.out.println("Image Loaded");
+        return new ImageIcon(bufferedImage);
     }
 
 
