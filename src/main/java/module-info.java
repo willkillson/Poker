@@ -1,3 +1,4 @@
+
 module com.example.testfx {
     requires javafx.controls;
     requires javafx.fxml;
@@ -12,8 +13,7 @@ module com.example.testfx {
     requires javafx.swing;
 
     requires static lombok;
-    requires static opencv;
-
+    requires org.bytedeco.opencv;
 
 
     exports com.example.testfx.kbot;
@@ -21,9 +21,12 @@ module com.example.testfx {
     exports com.example.testfx.model;
     exports com.example.testfx.kbot.vision;
 
+
+
     opens com.example.testfx to javafx.fxml;
     opens com.example.testfx.kbot to javafx.fxml;
     opens com.example.testfx.model to javafx.fxml;
     opens com.example.testfx.kbot.vision to javafx.fxml;
+
 
 }

@@ -53,7 +53,8 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     // OpenCV
-    implementation files('lib/opencv-455.jar')
+//    implementation files('lib/opencv-455.jar')
+    implementation group: 'org.bytedeco', name: 'opencv', version: '4.5.5-1.5.7'
 }
 
 test {
