@@ -20,16 +20,13 @@ import org.opencv.imgproc.Imgproc;
 
 public class DisplayingImagesUsingSwings {
 
-    //! [declare]
-    /// Global Variables
-    Boolean use_mask = false;
-    Mat img = new Mat(), templ = new Mat();
-    Mat mask = new Mat();
-
-    int match_method;
-
-
     public static void main(String args[]) throws Exception {
+
+        new DisplayingImagesUsingSwings();
+
+    }
+
+    public DisplayingImagesUsingSwings() throws IOException {
         //Loading the OpenCV core library
         System.loadLibrary( Core.NATIVE_LIBRARY_NAME );
 
@@ -80,20 +77,9 @@ public class DisplayingImagesUsingSwings {
 //                Imgproc.LINE_4,
 //                0);
 
-
-//        Image tmpImg = HighGui.toBufferedImage(img_display);
         BufferedImage bufferedImage = DisplayingImagesUsingSwings.Mat2BufferedImage(img_display);
-        //Encoding the image
-//        MatOfByte matOfByte = new MatOfByte();
-//        Imgcodecs.imencode(".png", needle_image, matOfByte);
-        //Storing the encoded Mat in a byte array
-//        byte[] byteArray = matOfByte.toArray();
-        //Preparing the Buffered Image
-//        InputStream in = new ByteArrayInputStream(byteArray);
-//        BufferedImage bufImage = ImageIO.read(in);
-        //Instantiate JFrame
+
         JFrame frame = new JFrame();
-        //Set Content to the JFrame
         frame.getContentPane().add(new JLabel(new ImageIcon(bufferedImage)));
         frame.pack();
         frame.setVisible(true);
