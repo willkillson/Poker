@@ -1,6 +1,7 @@
 package com.example.testfx;
 
 import com.example.testfx.kbot.InputTest;
+import com.example.testfx.kbot.vision.Vision;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -18,16 +19,20 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
 
 public class MainApplication extends Application {
     public CurrentCommandTable table;
     public Canvas canvas;
+
+    public Vision vision;
 
     public static void main(String[] args) {
         launch(args);
@@ -39,6 +44,12 @@ public class MainApplication extends Application {
         Scene scene = new Scene(root,1010,945);
         stage.setTitle("kbot");
         stage.setResizable(false);
+
+        try{
+            this.vision = new Vision();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
         InputTest inputTest = new InputTest(this);
@@ -73,6 +84,17 @@ public class MainApplication extends Application {
                 imageToBeDrawn.addListener(event -> addImageToCanvas(imageToBeDrawn.get()));
                 while(true){
                     BufferedImage bi = robot.createScreenCapture(rect);
+
+//                    try {
+//                        BufferedImage bufferedImage = vision.executeMatch(bi);
+////                        Image imageIconImage = imageIcon.getImage();
+////                        BufferedImage bufferedImage = (BufferedImage) imageIconImage;
+//                        WritableImage writeableImage = SwingFXUtils.toFXImage(bufferedImage, null);
+//                        imageToBeDrawn.set(writeableImage);
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+
                     WritableImage image = SwingFXUtils.toFXImage(bi, null);
                     imageToBeDrawn.set(image);
                 }

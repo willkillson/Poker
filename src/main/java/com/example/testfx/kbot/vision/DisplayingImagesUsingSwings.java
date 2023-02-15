@@ -86,12 +86,12 @@ public class DisplayingImagesUsingSwings {
 //                Imgproc.LINE_4,
 //                0);
 
-        BufferedImage bufferedImage = DisplayingImagesUsingSwings.Mat2BufferedImage(img_display);
+        BufferedImage bufferedImage = mat2BufferedImage(img_display);
         return new ImageIcon(bufferedImage);
     }
 
 
-    public static BufferedImage Mat2BufferedImage(Mat mat) throws IOException {
+    public BufferedImage mat2BufferedImage(Mat mat) throws IOException {
         //Encoding the image
         MatOfByte matOfByte = new MatOfByte();
         Imgcodecs.imencode(".jpg", mat, matOfByte);

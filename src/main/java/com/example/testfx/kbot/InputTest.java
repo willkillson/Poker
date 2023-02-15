@@ -33,15 +33,11 @@ public class InputTest implements
 
     public int current_mouse_y;
 
-    public Vision vision;
-
     public static void main(String[] args) {
         new InputTest(null);
     }
 
     public InputTest(Application app) {
-
-        this.vision = new Vision();
 
         if (app == null){
             this.uiActivated = false;
