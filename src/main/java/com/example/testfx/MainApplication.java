@@ -59,6 +59,7 @@ public class MainApplication extends Application {
 
         canvas = new Canvas();
 
+
         Pane pane = new Pane();
         pane.getChildren().add(canvas);
         canvas.widthProperty().bind(pane.widthProperty());

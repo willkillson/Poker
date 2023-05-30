@@ -46,12 +46,15 @@ public class InputAction {
     }
 
     int getKeyboardCode(){
+        System.out.println(this.keyCode);
         if(this.keyCode==160){
             return KeyEvent.VK_SHIFT;
         }else if(this.keyCode==164){
             return KeyEvent.VK_ALT;
         }else if (this.keyCode==162){
             return KeyEvent.VK_CONTROL;
+        }else if (this.keyCode==13){
+            return KeyEvent.VK_ENTER;
         }
         else{
             return this.keyCode;
