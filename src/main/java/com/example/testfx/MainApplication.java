@@ -55,10 +55,7 @@ public class MainApplication extends Application {
         InputTest inputTest = new InputTest(this);
         this.table = new CurrentCommandTable(inputTest);
 
-
-
         canvas = new Canvas();
-
 
         Pane pane = new Pane();
         pane.getChildren().add(canvas);
@@ -86,18 +83,20 @@ public class MainApplication extends Application {
                 while(true){
                     BufferedImage bi = robot.createScreenCapture(rect);
 
-//                    try {
-//                        BufferedImage bufferedImage = vision.executeMatch(bi);
-////                        Image imageIconImage = imageIcon.getImage();
-////                        BufferedImage bufferedImage = (BufferedImage) imageIconImage;
-//                        WritableImage writeableImage = SwingFXUtils.toFXImage(bufferedImage, null);
-//                        imageToBeDrawn.set(writeableImage);
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
-//                    }
+                    try {
+                        BufferedImage bufferedImage = vision.executeMatch(bi);
+//                        Image imageIconImage = imageIcon.getImage();
+//                        BufferedImage bufferedImage = (BufferedImage) imageIconImage;
+                        WritableImage writeableImage = SwingFXUtils.toFXImage(bufferedImage, null);
+                        WritableImage image = SwingFXUtils.toFXImage(bi, null);
 
-                    WritableImage image = SwingFXUtils.toFXImage(bi, null);
-                    imageToBeDrawn.set(image);
+                        imageToBeDrawn.set(image);
+                        imageToBeDrawn.set(writeableImage);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+
                 }
             }
         });

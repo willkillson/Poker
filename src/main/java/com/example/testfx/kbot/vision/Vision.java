@@ -30,12 +30,12 @@ public class Vision {
         //# Can use IMREAD flags to do different pre-processing of image files,
         //# like making them grayscale or reducing the size.q
         //# https://docs.opencv.org/4.2.0/d4/da8/group__imgcodecs.html
-        String needleFile_001 = "C:\\dev\\TestFX\\data\\images\\currentInputs\\needles\\image_001.png";
-        String needleFile_002 = "C:\\dev\\TestFX\\data\\images\\currentInputs\\needles\\image_002.png";
+        String needleFile_001 = "C:\\dev\\TestFX\\data\\images\\currentInputs\\needles\\google_imc.png";
+//        String needleFile_002 = "C:\\dev\\TestFX\\data\\images\\currentInputs\\needles\\image_002.png";
 
         this.needles = new ArrayList<>();
         this.needles.add(Imgcodecs.imread(needleFile_001, Imgcodecs.IMREAD_UNCHANGED));
-        this.needles.add(Imgcodecs.imread(needleFile_002, Imgcodecs.IMREAD_UNCHANGED));
+//        this.needles.add(Imgcodecs.imread(needleFile_002, Imgcodecs.IMREAD_UNCHANGED));
 
     }
 
@@ -63,12 +63,12 @@ public class Vision {
             Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
             Point matchLoc = mmr.maxLoc;
             double maxVal = mmr.maxVal;
-            double threshHold = 0.8;
+            double threshHold = 0.5;
             Scalar s = null;
             if(i ==0){
                 s = new Scalar(255,255,255);
             }else if(i ==1){
-                s = new Scalar(255,255,255);
+                s = new Scalar(0,255,0);
             }
 
 
@@ -86,7 +86,7 @@ public class Vision {
                         matchLoc,
                         new Point(matchLoc.x + needle.cols(), matchLoc.y + needle.rows()),
                         s,
-                        5,
+                        10,
                         Imgproc.LINE_AA,
                         0);
             }
